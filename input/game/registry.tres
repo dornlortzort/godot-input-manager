@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="GameInputRegistry" load_steps=4 format=3 uid="uid://dm8hq4v4e0d2t"]
+
+[ext_resource type="Script" uid="uid://c4thqncbrk0p8" path="res://input/game_input_mode.gd" id="1_1e3l2"]
+[ext_resource type="Script" uid="uid://c8k3a0mwre6k5" path="res://input/game_input_registry.gd" id="2_ff8lq"]
+[ext_resource type="Resource" uid="uid://bwdg33cccyrxt" path="res://input/game/modes/ground.tres" id="2_fxio1"]
+
+[resource]
+script = ExtResource("2_ff8lq")
+_modes = Array[ExtResource("1_1e3l2")]([ExtResource("2_fxio1")])
+metadata/_custom_type_script = "uid://c8k3a0mwre6k5"

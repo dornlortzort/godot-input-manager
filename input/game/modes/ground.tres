@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="GameInputMode" load_steps=11 format=3 uid="uid://bwdg33cccyrxt"]
+
+[ext_resource type="Script" uid="uid://c3pshc3jnur6f" path="res://input/input_metadata.gd" id="1_ovinm"]
+[ext_resource type="Script" uid="uid://c4thqncbrk0p8" path="res://input/game_input_mode.gd" id="2_ovinm"]
+[ext_resource type="Resource" uid="uid://b42eak76ym526" path="res://input/game/input_metadatas/jump.tres" id="2_ufgj7"]
+[ext_resource type="Resource" uid="uid://ojy46svdgy7c" path="res://input/game/input_metadatas/move_backward.tres" id="3_b4vpk"]
+[ext_resource type="Resource" uid="uid://bdho2j4mujrr0" path="res://input/game/input_metadatas/move_forward.tres" id="4_0lpeg"]
+[ext_resource type="Resource" uid="uid://idmr2sdaupn3" path="res://input/game/input_metadatas/move_left.tres" id="5_fc6tg"]
+[ext_resource type="Resource" uid="uid://ci3571um4ksem" path="res://input/game/input_metadatas/move_right.tres" id="6_dtyp8"]
+[ext_resource type="Resource" uid="uid://kkscdlvutq37" path="res://input/game/input_metadatas/dash_sprint.tres" id="7_c64jh"]
+[ext_resource type="Resource" uid="uid://bll266jnu27ry" path="res://input/game/input_metadatas/evade.tres" id="8_inswl"]
+
+[sub_resource type="Resource" id="Resource_uuiqc"]
+resource_name = "spot_dodge [R, 100ms]"
+script = ExtResource("1_ovinm")
+action_name = &"spot_dodge"
+buffer_ms = 100.0
+
+[resource]
+script = ExtResource("2_ovinm")
+mode_name = &"ground"
+action_name_to_add = &"spot_dodge"
+_actions = Array[ExtResource("1_ovinm")]([ExtResource("2_ufgj7"), ExtResource("3_b4vpk"), ExtResource("4_0lpeg"), ExtResource("5_fc6tg"), ExtResource("6_dtyp8"), ExtResource("7_c64jh"), SubResource("Resource_uuiqc"), ExtResource("8_inswl")])
+metadata/_custom_type_script = "uid://c4thqncbrk0p8"

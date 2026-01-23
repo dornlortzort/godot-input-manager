@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="InputMetadata" load_steps=2 format=3 uid="uid://bll266jnu27ry"]
+
+[ext_resource type="Script" uid="uid://c3pshc3jnur6f" path="res://input/input_metadata.gd" id="1_qji34"]
+
+[resource]
+resource_name = "evade [R, 100ms]"
+script = ExtResource("1_qji34")
+action_name = &"evade"
+buffer_ms = 100.0
+metadata/_custom_type_script = "uid://c3pshc3jnur6f"

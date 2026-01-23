@@ -14,7 +14,3 @@ config/name="Lab0"
 run/main_scene="uid://dfstwlmvu4p36"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
-
-[autoload]
-
-InputManager="*res://input/manager/input_manager.gd"

@@ -10,7 +10,7 @@ extends Resource
 @export_tool_button("Auto-Populate Missing Actions", "Add") var _populate_button = _auto_populate_missing
 func _auto_populate_missing() -> void:
 	var added: Array[StringName] = []
-	for mode in AllGameInputModes.get_instance_modes():
+	for mode in GameInputRegistry.get_instance_modes():
 		for registry_action_name in mode.get_all_names():
 			if not bindings.has(registry_action_name):
 				var new_binding := InputBinding.new()
@@ -39,7 +39,7 @@ func validate_and_print() -> void:
 	var kbm_count := 0
 	var gamepad_count := 0
 
-	for mode in AllGameInputModes.get_instance_modes():
+	for mode in GameInputRegistry.get_instance_modes():
 		for registry_action_name in mode.get_all_names():
 			if not bindings.has(registry_action_name):
 				missing.append(registry_action_name)

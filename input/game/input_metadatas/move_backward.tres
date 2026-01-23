@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="InputMetadata" load_steps=2 format=3 uid="uid://ojy46svdgy7c"]
+
+[ext_resource type="Script" uid="uid://c3pshc3jnur6f" path="res://input/input_metadata.gd" id="1_f8knq"]
+
+[resource]
+resource_name = "move_backward [R]"
+script = ExtResource("1_f8knq")
+action_name = &"move_backward"
+metadata/_custom_type_script = "uid://c3pshc3jnur6f"

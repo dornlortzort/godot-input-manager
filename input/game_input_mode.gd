@@ -1,7 +1,27 @@
 @tool
-class_name InputMode
+class_name GameInputMode
 extends Resource
 
+# Status shown in editor (computed, read-only)
+var registry_status: String:
+    get:
+        if _is_in_registry():
+            return "✓ In registry.tres"
+        return "⚠ Not in registry.tres"
+
+func _is_in_registry() -> bool:
+    var registry := GameInputRegistry.get_instance()
+    if registry == null:
+        return false
+    return self in registry._modes
+
+func _validate_property(property: Dictionary) -> void:
+    if property.name == "registry_status":
+        property.usage = PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY
+
+    
+@export var mode_name: StringName = &"new_input_mode"
+@export_category("Actions")
 @export var action_name_to_add: StringName = &""
 @export_tool_button("Add Input Action", "Add") var add_button = _add_input_action
 func _add_input_action() -> void:
@@ -21,9 +41,9 @@ func _add_input_action() -> void:
     notify_property_list_changed()
     emit_changed()
 
-@export_category("Data")
-@export var mode_name: StringName = &""
 @export var _actions: Array[InputMetadata] = []
+
+# --- API --- 
 
 func get_all() -> Array[InputMetadata]:
     return _actions
