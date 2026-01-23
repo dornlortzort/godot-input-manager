@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://g44ijaukwika"]
+
+[ext_resource type="Script" uid="uid://xx2a0ncktn22" path="res://player/player_character.gd" id="1_1v1wt"]
+[ext_resource type="Script" uid="uid://cdhrpuc6wpvuq" path="res://ability_manager.gd" id="2_6ahhe"]
+[ext_resource type="Script" uid="uid://ctxxe0uiwfo1t" path="res://player/state_machine.gd" id="2_tncax"]
+[ext_resource type="Script" uid="uid://cdrhrdgwx8y1w" path="res://player/player_input_router.gd" id="3_ni121"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tfo3t"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tfo3t"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tfo3t"]
+
+[node name="(Player) CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("camera_pivot_")]
+script = ExtResource("1_1v1wt")
+camera_pivot_ = NodePath("(CameraPivot) Node3D")
+
+[node name="(CameraPivot) Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.95105654, 0.309017, 0, -0.309017, 0.95105654, 0, 2, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="(CameraPivot) Node3D"]
+spring_length = 5.025
+
+[node name="Camera3D" type="Camera3D" parent="(CameraPivot) Node3D/SpringArm3D"]
+
+[node name="(CollisionCapsule) CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_tfo3t")
+
+[node name="(ModelPivot) Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="(ModelPivot) Node3D"]
+mesh = SubResource("CapsuleMesh_tfo3t")
+
+[node name="(Hitbox) Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08, -1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="(Hitbox) Area3D"]
+shape = SubResource("SphereShape3D_tfo3t")
+
+[node name="MovementStateMachine" type="Node" parent="."]
+script = ExtResource("2_tncax")
+
+[node name="AbilityManager" type="Node" parent="."]
+script = ExtResource("2_6ahhe")
+
+[node name="PlayerInputRouter" type="Node" parent="."]
+script = ExtResource("3_ni121")
