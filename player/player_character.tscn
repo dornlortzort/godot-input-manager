@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://g44ijaukwika"]
+[gd_scene load_steps=7 format=3 uid="uid://g44ijaukwika"]
 
 [ext_resource type="Script" uid="uid://xx2a0ncktn22" path="res://player/player_character.gd" id="1_1v1wt"]
 [ext_resource type="Script" uid="uid://cdhrpuc6wpvuq" path="res://ability_manager.gd" id="2_6ahhe"]
 [ext_resource type="Script" uid="uid://ctxxe0uiwfo1t" path="res://player/state_machine.gd" id="2_tncax"]
-[ext_resource type="Script" uid="uid://cdrhrdgwx8y1w" path="res://player/player_input_router.gd" id="3_ni121"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tfo3t"]
 
@@ -44,6 +43,3 @@ script = ExtResource("2_tncax")
 
 [node name="AbilityManager" type="Node" parent="."]
 script = ExtResource("2_6ahhe")
-
-[node name="PlayerInputRouter" type="Node" parent="."]
-script = ExtResource("3_ni121")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dfstwlmvu4p36"]
+[gd_scene format=3 uid="uid://dfstwlmvu4p36"]
 
 [ext_resource type="PackedScene" uid="uid://g44ijaukwika" path="res://player/player_character.tscn" id="1_f3sb7"]
 
@@ -7,16 +7,16 @@ size = Vector3(100, 1, 100)
 
 [sub_resource type="BoxMesh" id="BoxMesh_fj7yv"]
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D" type="Node3D" unique_id=1826927669]
 
-[node name="Player" parent="." instance=ExtResource("1_f3sb7")]
+[node name="Player" parent="." unique_id=245597623 instance=ExtResource("1_f3sb7")]
 
-[node name="(floor) StaticBody3D" type="StaticBody3D" parent="."]
+[node name="(floor) StaticBody3D" type="StaticBody3D" parent="." unique_id=1190932197]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="(floor) StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="(floor) StaticBody3D" unique_id=2145957448]
 shape = SubResource("BoxShape3D_f3sb7")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="(floor) StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="(floor) StaticBody3D" unique_id=2055438873]
 transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
 mesh = SubResource("BoxMesh_fj7yv")
