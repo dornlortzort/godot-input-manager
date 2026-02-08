@@ -10,8 +10,7 @@ public interface IInputAction {
   float BufferSeconds { get; }
 
   /// <summary>
-  ///   The System.Type of the value this action works with.
-  ///   Useful for debug tooling and validation.
+  ///   The System.Type of the value this action works with. Useful for debug tooling and validation.
   /// </summary>
   Type ValueType { get; }
 
@@ -19,5 +18,15 @@ public interface IInputAction {
   public float PhaseStartTime { get; }
   public float ElapsedSecondsInPhase { get; }
   bool IsActive { get; } // convenience: true when Pending or Activated
+
+  /// <summary>
+  ///   Called by the manager to push a processed value into this action. Accepts variant because the
+  ///   manager's pipeline is type-agnostic. Concrete types unpack to their typed field internally.
+  /// </summary>
+  void ReceiveValue(Variant value);
+
+  /// <summary>
+  ///   Called by the manager to update phase
+  /// </summary>
   void UpdatePhase(InputPhase phase);
 }

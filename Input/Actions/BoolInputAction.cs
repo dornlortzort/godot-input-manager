@@ -1,17 +1,12 @@
 using System;
+using Godot;
 
-/// <summary>
-///   Can't make generic classes as Godot [GlobalClass] types, but you can make their
-///   typed children generic
-/// </summary>
-public partial class BoolInputAction : InputAction<bool>, IReadableInput<bool> {
-  public bool Value { get; private set; }
-  // todo: add a default trigger (optional)
-  //    type consideration: should this be a Resource as well?
-
+[GlobalClass]
+public partial class BoolInputAction : InputAction<bool> {
   public override Type ValueType => typeof(bool);
+  public override bool Value { get; protected set; }
 
-  public override void ReceiveValue(bool value, float delta) {
-    throw new NotImplementedException();
+  public override void ReceiveTypedValue(bool value) {
+    Value = value;
   }
 }
