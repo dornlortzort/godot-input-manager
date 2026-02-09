@@ -15,6 +15,10 @@ public partial class Vector2DeltaInputAction : InputAction<Vector2>, IDeltaInput
 
   public float Magnitude => Value.Length();
 
+  /// <summary>
+  ///   Called at end-of-frame by the InputManager. This is done by assigning the manager a
+  ///   higher ProcessPriority than everything else in the game.
+  /// </summary>
   public void ResetAccumulator() {
     Value = Vector2.Zero;
   }
