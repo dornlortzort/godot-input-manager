@@ -1,54 +1,72 @@
-using System;
 using Godot;
 
-public partial class HoldTrigger : Resource, IInputTrigger {
-  /// <summary>
-  ///   Gets set at the end of this frame, processed at the start of the next frame.
-  /// </summary>
-  private bool flag_activeLastFrame;
+/// <summary>
+///   HoldTrigger is the same as PressTrigger but you have to meet a SecondsToHold
+///   requirement
+/// </summary>
+public partial class HoldTrigger : InputTrigger {
+  private enum State {
+    Idle,
+    Pending,
+    Held
+  }
 
-  [Export] public float ActuationThreshold { get; set; } = 0.5f;
+  private State _state;
+  private float _elapsed;
 
-  public InputPhase Evaluate(Variant value, float delta, InputDebugContext ctx) {
+  [Export(PropertyHint.Range, "0.0,1.0,0.01")]
+  public float Threshold { get; private set; } = 0.3f;
+
+  [Export] public float Duration { get; private set; } = 0.5f;
+
+  public override InputPhase Evaluate(Variant value, float delta, InputDebugContext ctx) {
     float magnitude;
     switch (value.VariantType) {
       case Variant.Type.Bool:
-        magnitude = 1.0f;
+        magnitude = InputUtils.GetBoolMagnitude(value.As<bool>());
         break;
       case Variant.Type.Float:
-        magnitude = GetFloatMagnitude(value.As<float>());
+        magnitude = InputUtils.GetFloatMagnitude(value.As<float>());
         break;
       case Variant.Type.Vector2:
-        magnitude = GetVector2Magnitude(value.As<Vector2>());
+        magnitude = InputUtils.GetVector2Magnitude(value.As<Vector2>());
         break;
       default:
-        flag_activeLastFrame = false;
-        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "PressTrigger");
+        Reset();
+        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "HoldTrigger");
     }
 
-    InputPhase result;
-    if (magnitude == 0.0f) {
-      result = flag_activeLastFrame ? InputPhase.Canceled : InputPhase.None;
-      flag_activeLastFrame = false;
-    } else if (magnitude < ActuationThreshold) {
-      result = flag_activeLastFrame ? InputPhase.Completed : InputPhase.Pending;
-    } else {
-      result = InputPhase.Triggered;
-      flag_activeLastFrame = true;
+    var isAbove = magnitude >= Threshold;
+    switch (_state) {
+      case State.Idle:
+        if (!isAbove) return InputPhase.None;
+
+        _elapsed = 0f;
+        _state = State.Pending;
+        return InputPhase.Pending;
+      case State.Pending:
+        if (!isAbove) {
+          _state = State.Idle;
+          return InputPhase.Canceled;
+        }
+
+        _elapsed += delta;
+        if (_elapsed < Duration) return InputPhase.Pending;
+
+        _state = State.Held;
+        return InputPhase.Triggered;
+      case State.Held:
+        if (isAbove) return InputPhase.Sustained;
+
+        _state = State.Idle;
+        return InputPhase.Completed;
     }
 
-    return result;
+    return InputPhase.None;
   }
 
-  public void Reset() {
-    flag_activeLastFrame = false;
-  }
-
-  private float GetFloatMagnitude(float f) {
-    return MathF.Abs(f);
-  }
-
-  private float GetVector2Magnitude(Vector2 v) {
-    return v.Length();
+  public override void Reset() {
+    _elapsed = 0.0f;
+    _state = State.Idle;
   }
 }

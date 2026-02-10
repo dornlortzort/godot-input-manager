@@ -14,6 +14,8 @@ public interface IInputAction {
   /// </summary>
   Type ValueType { get; }
 
+  IInputTrigger Trigger { get; }
+
   InputPhase Phase { get; }
   public float PhaseStartTime { get; }
   public float ElapsedSecondsInPhase { get; }
@@ -23,10 +25,5 @@ public interface IInputAction {
   ///   Called by the manager to push a processed value into this action. Accepts variant because the
   ///   manager's pipeline is type-agnostic. Concrete types unpack to their typed field internally.
   /// </summary>
-  void ReceiveValue(Variant value);
-
-  /// <summary>
-  ///   Called by the manager to update phase
-  /// </summary>
-  void UpdatePhase(InputPhase phase);
+  void ReceiveValueAndPhaseUpdates(Variant value, InputPhase phase);
 }

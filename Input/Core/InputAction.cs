@@ -29,8 +29,12 @@ public abstract partial class InputAction<[MustBeVariant] TValue> : Resource, II
   [Signal]
   public delegate void TriggeredEventHandler();
 
+  [Signal]
+  public delegate void SustainedEventHandler();
+
   public abstract TValue Value { get; protected set; }
   public abstract Type ValueType { get; }
+
 
   // ** Design-time metadata ** 
   [Export] public StringName ActionName { get; private set; }
@@ -38,17 +42,13 @@ public abstract partial class InputAction<[MustBeVariant] TValue> : Resource, II
   [Export] public bool IsRemappable { get; private set; } = true;
   [Export] public float BufferSeconds { get; set; }
 
-  // todo: add a default trigger (triggers will inherit Resource as well)
-  //  type = NoTrigger/EmptyTrigger/null maybe
+  // abstract InputTrigger type, exportable for editor config
+  [Export] public InputTrigger Trigger { get; private set; }
 
-
-  /// <summary>
-  ///   Receive a Variant value, because the godot engine passes Variants from
-  ///   its raw inputs
-  /// </summary>
-  public void ReceiveValue(Variant value) {
-    ReceiveTypedValue(value.As<TValue>());
-  }
+  // satisfies the interface with explicit implementation
+  IInputTrigger IInputAction.Trigger => EffectiveTrigger;
+  public IInputTrigger EffectiveTrigger => Trigger ?? _defaultTrigger;
+  private readonly DownTrigger _defaultTrigger = new();
 
   // ** Runtime state (readonly to game code) **
   public InputPhase Phase { get; private set; } = InputPhase.None;
@@ -56,7 +56,13 @@ public abstract partial class InputAction<[MustBeVariant] TValue> : Resource, II
   public float ElapsedSecondsInPhase => (float)(Time.GetTicksMsec() / 1000.0 - PhaseStartTime);
   public bool IsActive => Phase is InputPhase.Pending or InputPhase.Triggered;
 
-  public void UpdatePhase(InputPhase phase) {
+  /// <summary>
+  ///   Receive a Variant value, because the godot engine passes Variants from
+  ///   its raw inputs
+  /// </summary>
+  public void ReceiveValueAndPhaseUpdates(Variant value, InputPhase phase) {
+    ReceiveTypedValue(value.As<TValue>());
+
     if (phase == Phase) return;
 
     Phase = phase;
@@ -65,16 +71,19 @@ public abstract partial class InputAction<[MustBeVariant] TValue> : Resource, II
       case InputPhase.None:
         break;
       case InputPhase.Pending:
-        EmitSignal(SignalName.Pending);
-        break;
-      case InputPhase.Triggered:
-        EmitSignal(SignalName.Triggered);
+        EmitSignalPending();
         break;
       case InputPhase.Canceled:
-        EmitSignal(SignalName.Canceled);
+        EmitSignalCanceled();
+        break;
+      case InputPhase.Triggered:
+        EmitSignalTriggered();
+        break;
+      case InputPhase.Sustained:
+        EmitSignalSustained();
         break;
       case InputPhase.Completed:
-        EmitSignal(SignalName.Completed);
+        EmitSignalCompleted();
         break;
       default:
         throw new ArgumentOutOfRangeException(nameof(phase), phase, null);

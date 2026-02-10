@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public readonly struct InputDebugContext {
@@ -17,5 +18,17 @@ public static class InputUtils {
     GD.PushError(
       $"{nameOfTrigger} on action '{ctx.ActionName}' got an incompatible input type: '{val.VariantType}'. Returning InputPhase.None You should probably remove this modifier from the action.");
     return InputPhase.None;
+  }
+
+  public static float GetBoolMagnitude(bool b) {
+    return b ? 1.0f : 0.0f;
+  }
+
+  public static float GetFloatMagnitude(float f) {
+    return MathF.Abs(f);
+  }
+
+  public static float GetVector2Magnitude(Vector2 v) {
+    return v.Length();
   }
 }

@@ -1,10 +1,8 @@
 using Godot;
 
-public partial class PressTrigger : InputTrigger {
-  [Export(PropertyHint.Range, "0.0,1.0,0.01")]
-  public float Threshold { get; private set; } = 0.5f;
-
-  private bool _wasAbove;
+public partial class DownTrigger : InputTrigger {
+  [Export] public float Threshold { get; private set; } = 0.3f;
+  private bool _isActive;
 
   public override InputPhase Evaluate(Variant value, float delta, InputDebugContext ctx) {
     float magnitude;
@@ -20,22 +18,25 @@ public partial class PressTrigger : InputTrigger {
         break;
       default:
         Reset();
-        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "PressTrigger");
+        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "FlickTrigger");
     }
 
     var isAbove = magnitude >= Threshold;
-    InputPhase result;
-
-    if (isAbove && !_wasAbove)
-      result = InputPhase.Triggered;
-    else
-      result = InputPhase.None;
-
-    _wasAbove = isAbove;
-    return result;
+    switch (isAbove) {
+      case true when !_isActive:
+        _isActive = true;
+        return InputPhase.Triggered;
+      case true when _isActive:
+        return InputPhase.Sustained;
+      case false when _isActive:
+        _isActive = false;
+        return InputPhase.Completed;
+      default:
+        return InputPhase.None;
+    }
   }
 
   public override void Reset() {
-    _wasAbove = false;
+    _isActive = false;
   }
 }
