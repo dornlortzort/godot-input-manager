@@ -1,9 +1,9 @@
 using Godot;
 
-public partial class ResponseCurveModifier : Resource, IInputModifier {
+public partial class ResponseCurveModifier : InputModifier {
   [Export] public Curve Curve { get; private set; } = new();
 
-  public Variant Process(Variant input, float delta, in InputDebugContext ctx) {
+  public override Variant Process(Variant input, float delta, in InputDebugContext ctx) {
     return input.VariantType switch {
       Variant.Type.Vector2 => ProcessVector2D(input.As<Vector2>(), ctx),
       Variant.Type.Float => ProcessFloat(input.As<float>(), ctx),

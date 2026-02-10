@@ -1,13 +1,13 @@
 using Godot;
 
-public partial class DeadZoneModifier : Resource, IInputModifier {
+public partial class DeadZoneModifier : InputModifier {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float InnerThreshold { get; private set; } = 0.2f;
 
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float OuterThreshold { get; private set; } = 0.95f;
 
-  public Variant Process(Variant input, float delta, in InputDebugContext ctx) {
+  public override Variant Process(Variant input, float delta, in InputDebugContext ctx) {
     return input.VariantType switch {
       Variant.Type.Vector2 => ProcessVector2(input.As<Vector2>()),
       Variant.Type.Float => ProcessFloat(input.As<float>()),
