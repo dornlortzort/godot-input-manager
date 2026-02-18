@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="InputRegistry" format=3 uid="uid://ctgx7hrpc8xfd"]
+
+[ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="1_c07hl"]
+[ext_resource type="Script" uid="uid://cu0c406aib5dq" path="res://Input/Core/Config/InputRegistry.cs" id="1_x4hgv"]
+
+[sub_resource type="Resource" id="Resource_c07hl"]
+resource_name = "Vector2 Move 'Move' - remap: y | buf: none"
+script = ExtResource("1_c07hl")
+Value = 2
+ActionName = &"Move"
+DisplayName = "Move"
+metadata/_custom_type_script = "uid://c0vs50lnadt1a"
+
+[sub_resource type="Resource" id="Resource_qoqso"]
+resource_name = "Bool Jump 'Jump' - remap: y | buf: 0.25s"
+script = ExtResource("1_c07hl")
+ActionName = &"Jump"
+DisplayName = "Jump"
+BufferSeconds = 0.25
+metadata/_custom_type_script = "uid://c0vs50lnadt1a"
+
+[sub_resource type="Resource" id="Resource_vsypm"]
+resource_name = "ΔVector2 Look 'Look' - remap: n | buf: none"
+script = ExtResource("1_c07hl")
+Value = 2
+ActionName = &"Look"
+DisplayName = "Look"
+IsRemappable = false
+IsDeltaInput = true
+metadata/_custom_type_script = "uid://c0vs50lnadt1a"
+
+[resource]
+script = ExtResource("1_x4hgv")
+Actions = Array[Object]([SubResource("Resource_c07hl"), SubResource("Resource_qoqso"), SubResource("Resource_vsypm")])
+_lastGeneratedHash = 1192339857
+metadata/_custom_type_script = "uid://cu0c406aib5dq"
