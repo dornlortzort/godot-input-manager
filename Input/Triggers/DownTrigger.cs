@@ -1,38 +1,27 @@
 using Godot;
 
+/// <summary>
+/// This is a DownTrigger
+/// </summary>
 public partial class DownTrigger : InputTrigger {
   [Export] public float Threshold { get; private set; } = 0.3f;
   private bool _isActive;
 
-  public override InputPhase Evaluate(Variant value, float delta, InputDebugContext ctx) {
-    float magnitude;
-    switch (value.VariantType) {
-      case Variant.Type.Bool:
-        magnitude = InputUtils.GetBoolMagnitude(value.As<bool>());
-        break;
-      case Variant.Type.Float:
-        magnitude = InputUtils.GetFloatMagnitude(value.As<float>());
-        break;
-      case Variant.Type.Vector2:
-        magnitude = InputUtils.GetVector2Magnitude(value.As<Vector2>());
-        break;
-      default:
-        Reset();
-        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "FlickTrigger");
-    }
+  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+    var magnitude = input.Value.Length();
 
     var isAbove = magnitude >= Threshold;
     switch (isAbove) {
       case true when !_isActive:
         _isActive = true;
-        return InputPhase.Triggered;
+        return InputActionPhaseEnum.Activated;
       case true when _isActive:
-        return InputPhase.Sustained;
+        return InputActionPhaseEnum.Activated;
       case false when _isActive:
         _isActive = false;
-        return InputPhase.Completed;
+        return InputActionPhaseEnum.Completed;
       default:
-        return InputPhase.None;
+        return InputActionPhaseEnum.None;
     }
   }
 

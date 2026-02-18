@@ -6,30 +6,16 @@ public partial class PressTrigger : InputTrigger {
 
   private bool _wasAbove;
 
-  public override InputPhase Evaluate(Variant value, float delta, InputDebugContext ctx) {
-    float magnitude;
-    switch (value.VariantType) {
-      case Variant.Type.Bool:
-        magnitude = InputUtils.GetBoolMagnitude(value.As<bool>());
-        break;
-      case Variant.Type.Float:
-        magnitude = InputUtils.GetFloatMagnitude(value.As<float>());
-        break;
-      case Variant.Type.Vector2:
-        magnitude = InputUtils.GetVector2Magnitude(value.As<Vector2>());
-        break;
-      default:
-        Reset();
-        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "PressTrigger");
-    }
+  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+    var magnitude = input.Value.Length();
 
     var isAbove = magnitude >= Threshold;
-    InputPhase result;
+    InputActionPhaseEnum result;
 
     if (isAbove && !_wasAbove)
-      result = InputPhase.Triggered;
+      result = InputActionPhaseEnum.Activated;
     else
-      result = InputPhase.None;
+      result = InputActionPhaseEnum.None;
 
     _wasAbove = isAbove;
     return result;

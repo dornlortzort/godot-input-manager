@@ -7,29 +7,21 @@ public partial class DeadZoneModifier : InputModifier {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float OuterThreshold { get; private set; } = 0.95f;
 
-  public override Variant Process(Variant input, float delta, in InputDebugContext ctx) {
-    return input.VariantType switch {
-      Variant.Type.Vector2 => ProcessVector2(input.As<Vector2>()),
-      Variant.Type.Float => ProcessFloat(input.As<float>()),
-      _ => InputUtils.Modifier_PassUnsupportedValue(input, ctx, "DeadZoneModifier")
-    };
-  }
+  public override InputPipelineData Process(InputPipelineData input, float delta) {
+    if (OuterThreshold <= InnerThreshold) {
+      input.Value = Vector3.Zero;
+      return input;
+    }
 
-  private Variant ProcessVector2(Vector2 v) {
-    var magnitude = v.Length();
-    if (magnitude < InnerThreshold) return Variant.From(Vector2.Zero);
+    var magnitude = input.Value.Length();
+    if (magnitude < InnerThreshold) {
+      input.Value = Vector3.Zero;
+      return input;
+    }
 
     var remappedMagnitude = Mathf.Clamp(Mathf.InverseLerp(InnerThreshold, OuterThreshold, magnitude), 0f, 1f);
-    return Variant.From(v.Normalized() * remappedMagnitude);
-  }
-
-  private Variant ProcessFloat(float f) {
-    float sign = Mathf.Sign(f);
-    var abs = Mathf.Abs(f);
-    if (abs < InnerThreshold) return Variant.From(0f);
-
-    var remappedMagnitude = Mathf.Clamp(Mathf.InverseLerp(InnerThreshold, OuterThreshold, abs), 0f, 1f);
-    return Variant.From(sign * remappedMagnitude);
+    input.Value = input.Value.Normalized() * remappedMagnitude;
+    return input;
   }
 }
 

@@ -19,50 +19,36 @@ public partial class HoldTrigger : InputTrigger {
 
   [Export] public float Duration { get; private set; } = 0.5f;
 
-  public override InputPhase Evaluate(Variant value, float delta, InputDebugContext ctx) {
-    float magnitude;
-    switch (value.VariantType) {
-      case Variant.Type.Bool:
-        magnitude = InputUtils.GetBoolMagnitude(value.As<bool>());
-        break;
-      case Variant.Type.Float:
-        magnitude = InputUtils.GetFloatMagnitude(value.As<float>());
-        break;
-      case Variant.Type.Vector2:
-        magnitude = InputUtils.GetVector2Magnitude(value.As<Vector2>());
-        break;
-      default:
-        Reset();
-        return InputUtils.Trigger_WarnUnsupportedValueThenReturnNone(value, ctx, "HoldTrigger");
-    }
+  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+    var magnitude = input.Value.Length();
 
     var isAbove = magnitude >= Threshold;
     switch (_state) {
       case State.Idle:
-        if (!isAbove) return InputPhase.None;
+        if (!isAbove) return InputActionPhaseEnum.None;
 
         _elapsed = 0f;
         _state = State.Pending;
-        return InputPhase.Pending;
+        return InputActionPhaseEnum.Pending;
       case State.Pending:
         if (!isAbove) {
           _state = State.Idle;
-          return InputPhase.Canceled;
+          return InputActionPhaseEnum.Canceled;
         }
 
         _elapsed += delta;
-        if (_elapsed < Duration) return InputPhase.Pending;
+        if (_elapsed < Duration) return InputActionPhaseEnum.Pending;
 
         _state = State.Held;
-        return InputPhase.Triggered;
+        return InputActionPhaseEnum.Activated;
       case State.Held:
-        if (isAbove) return InputPhase.Sustained;
+        if (isAbove) return InputActionPhaseEnum.Activated;
 
         _state = State.Idle;
-        return InputPhase.Completed;
+        return InputActionPhaseEnum.Completed;
     }
 
-    return InputPhase.None;
+    return InputActionPhaseEnum.None;
   }
 
   public override void Reset() {

@@ -3,28 +3,16 @@ using Godot;
 public partial class ResponseCurveModifier : InputModifier {
   [Export] public Curve Curve { get; private set; } = new();
 
-  public override Variant Process(Variant input, float delta, in InputDebugContext ctx) {
-    return input.VariantType switch {
-      Variant.Type.Vector2 => ProcessVector2D(input.As<Vector2>(), ctx),
-      Variant.Type.Float => ProcessFloat(input.As<float>(), ctx),
-      _ => InputUtils.Modifier_PassUnsupportedValue(input, ctx, "ResponseCurveModifier")
-    };
-  }
-
-  private float ApplyCurve(float f, InputDebugContext ctx) {
-    var abs = Mathf.Abs(f);
-    if (abs > 1f)
+  public override InputPipelineData Process(InputPipelineData input, float delta) {
+    if (input.Value.Length() > 1f)
       GD.PushWarning(
-        $"ResponseCurveModifier: input {f} outside expected [0,1] range on '{ctx.ActionName}'. This may lead to unexpected behavior. Is modifier order correct?");
+        $"ResponseCurveModifier: input {input.Value} outside expected [0,1] range on '{input.ActionName}'. This may lead to unexpected behavior. Is modifier order correct?");
 
-    return Mathf.Sign(f) * Curve.Sample(Mathf.Abs(f));
+    input.Value.X = ApplyCurve(input.Value.X);
+    input.Value.Y = ApplyCurve(input.Value.Y);
+    input.Value.Z = ApplyCurve(input.Value.Z);
+    return input;
   }
 
-  private Variant ProcessFloat(float f, InputDebugContext ctx) {
-    return Variant.From(ApplyCurve(f, ctx));
-  }
-
-  private Variant ProcessVector2D(Vector2 v, InputDebugContext ctx) {
-    return Variant.From(new Vector2(ApplyCurve(v.X, ctx), ApplyCurve(v.Y, ctx)));
-  }
+  private float ApplyCurve(float f) => Mathf.Sign(f) * Curve.Sample(Mathf.Abs(f));
 }
