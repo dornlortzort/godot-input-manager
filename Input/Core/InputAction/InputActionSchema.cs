@@ -5,23 +5,25 @@ using Godot.Collections;
 [Tool]
 [GlobalClass]
 public partial class InputActionSchema : Resource {
-  [Export] public InputActionValueEnum Value { get; private set; } = InputActionValueEnum.Bool;
-  [Export] public StringName ActionName { get; private set; } = "ActionName";
-  [Export] public string DisplayName { get; private set; } = "DisplayName";
+  [Export] private InputActionValueEnum Value = InputActionValueEnum.Bool;
+  [Export] private StringName ActionName = "ActionName";
+  [Export] private string DisplayName = "DisplayName";
 
-  [Export] public bool IsRemappable { get; private set; } = true;
-  [Export] public float BufferSeconds { get; private set; }
-  [Export] public bool IsDeltaInput { get; private set; }
+  [Export] private bool IsRemappable = true;
+  [Export] private float BufferSeconds = 0f;
+  [Export] private bool IsDeltaInput = false;
+
+  [Export] private InputTrigger _trigger;
 
   /// <summary>
   /// Auto-updates the displayed name in the editor for easier readability
   /// </summary>
   public override void _ValidateProperty(Dictionary property) {
     ResourceName =
-      $"{(IsDeltaInput ? "Δ" : "")}{Value} {ActionName} '{DisplayName}' - remap: {(IsRemappable ? "y" : "n")} | buf: {(BufferSeconds > 0 ? $"{BufferSeconds}s" : "none")}";
+      $"{(IsDeltaInput ? "Δ" : "")}{Value} {ActionName} '{DisplayName}' | remap: {(IsRemappable ? "y" : "n")} | buf: {(BufferSeconds > 0 ? $"{BufferSeconds}s" : "none")}";
   }
 
-  public string AsStringCodeDeclaration() {
+  public string AsCodeDeclarationString() {
     var className = (IsDeltaInput, Value) switch {
       (false, InputActionValueEnum.Bool) => "BoolInputAction",
       (false, InputActionValueEnum.Axis1D) => "FloatInputAction",
@@ -37,14 +39,16 @@ public partial class InputActionSchema : Resource {
     return $"    public static readonly {className} {ActionName} = new() {{ "
            + $"ActionName = \"{ActionName}\", "
            + $"DisplayName = \"{DisplayName}\", "
+           + $"ValueType = {nameof(InputActionValueEnum)}.{Value}, "
            + $"IsRemappable = {IsRemappable.ToString().ToLower()}, "
-           + $"BufferSeconds = {BufferSeconds}f "
+           + $"BufferSeconds = {BufferSeconds}f, "
+           + $"Trigger = {_trigger.AsCodeDeclarationString()} "
            + $"}};";
   }
 
-  public string AsStringDictionaryEntry() {
+  public string AsDictionaryEntryString() {
     return $"        {{ \"{ActionName}\", {ActionName} }},";
   }
 
-  public int GetHash() => GD.Hash(AsStringCodeDeclaration());
+  public int GetHash() => GD.Hash(AsCodeDeclarationString());
 }

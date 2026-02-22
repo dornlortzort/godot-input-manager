@@ -1,5 +1,7 @@
+using System;
 using Godot;
 
+[GlobalClass]
 public partial class DeadZoneModifier : InputModifier {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float InnerThreshold { get; private set; } = 0.2f;
@@ -7,7 +9,16 @@ public partial class DeadZoneModifier : InputModifier {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float OuterThreshold { get; private set; } = 0.95f;
 
-  public override InputPipelineData Process(InputPipelineData input, float delta) {
+  [Obsolete("Use parameterized constructor")]
+  public DeadZoneModifier() {
+  }
+
+  public DeadZoneModifier(float innerThreshold, float outerThreshold) {
+    InnerThreshold = Math.Clamp(0, innerThreshold, 1);
+    OuterThreshold = Math.Clamp(innerThreshold, outerThreshold, 1);
+  }
+
+  public override InputSample Process(InputSample input) {
     if (OuterThreshold <= InnerThreshold) {
       input.Value = Vector3.Zero;
       return input;

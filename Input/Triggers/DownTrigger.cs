@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 /// <summary>
@@ -7,7 +8,7 @@ public partial class DownTrigger : InputTrigger {
   [Export] public float Threshold { get; private set; } = 0.3f;
   private bool _isActive;
 
-  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
     var magnitude = input.Value.Length();
 
     var isAbove = magnitude >= Threshold;

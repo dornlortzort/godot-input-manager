@@ -1,6 +1,7 @@
+using System;
 using Godot;
 
-
+[GlobalClass]
 public partial class SwizzleModifier : InputModifier {
   public enum SwizzleOrder {
     XYZ, // identity, no change
@@ -15,7 +16,15 @@ public partial class SwizzleModifier : InputModifier {
   public SwizzleOrder Order { get; private set; } =
     SwizzleOrder.XYZ;
 
-  public override InputPipelineData Process(InputPipelineData input, float delta) {
+  [Obsolete("Use parameterized constructor")]
+  public SwizzleModifier() {
+  }
+
+  public SwizzleModifier(SwizzleOrder order) {
+    Order = order;
+  }
+
+  public override InputSample Process(InputSample input) {
     var v = input.Value;
     input.Value = Order switch {
       SwizzleOrder.XYZ => v,

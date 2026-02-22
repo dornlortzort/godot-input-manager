@@ -6,7 +6,7 @@ public partial class PressTrigger : InputTrigger {
 
   private bool _wasAbove;
 
-  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+  public override InputActionPhaseEnum Evaluate(InputSample input, float delta) {
     var magnitude = input.Value.Length();
 
     var isAbove = magnitude >= Threshold;

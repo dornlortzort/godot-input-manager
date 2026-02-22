@@ -19,7 +19,7 @@ public partial class HoldTrigger : InputTrigger {
 
   [Export] public float Duration { get; private set; } = 0.5f;
 
-  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+  public override InputActionPhaseEnum Evaluate(InputSample input, float delta) {
     var magnitude = input.Value.Length();
 
     var isAbove = magnitude >= Threshold;

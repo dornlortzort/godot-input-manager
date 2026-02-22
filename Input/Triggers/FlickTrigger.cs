@@ -21,7 +21,7 @@ public partial class FlickTrigger : InputTrigger {
   private bool _isPending;
   private bool _needsReset;
 
-  public override InputActionPhaseEnum Evaluate(InputPipelineData input, float delta) {
+  public override InputActionPhaseEnum Evaluate(InputSample input, float delta) {
     var magnitude = input.Value.Length();
 
     if (_needsReset) {
