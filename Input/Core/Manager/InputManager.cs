@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 [GlobalClass]
 public partial class InputManager : Node {
+  [Export] public InputRegistry Registry { get; private set; }
+
   private const string SavePath = "user://last_input_profile.tres";
 
   /*
@@ -29,6 +31,35 @@ public partial class InputManager : Node {
 
   private InputMode _currentInputMode;
 
+
+  /*
+   * todo: review this load profile and the load/save logic below.
+   *  improve and consolidate logic for InputModes (answer: is _eventLookup for
+   *  the mode or for the whole profile?)
+   *  - argument could be made that input mode should have a HashSet it exposes. (<-- yes  this)
+   */
+  private InputProfile LoadProfile() {
+    if (ResourceLoader.Exists(SavePath)) {
+      var loaded = ResourceLoader.Load<InputProfile>(SavePath);
+      if (loaded != null) return loaded;
+      GD.PushWarning($"Corrupted profile at {SavePath}, falling back to default.");
+    }
+
+    if (Registry != null) return Registry.DefaultProfile;
+
+    throw new System.InvalidOperationException("No valid input Registry or profile available.");
+  }
+
+  private void SaveProfilePath(string profilePath) {
+    using var file = FileAccess.Open(SavePath, FileAccess.ModeFlags.Write);
+    file.StoreString(profilePath);
+  }
+
+  private string LoadProfilePath() {
+    if (!FileAccess.FileExists(SavePath)) return null;
+    using var file = FileAccess.Open(SavePath, FileAccess.ModeFlags.Read);
+    return file.GetAsText().StripEdges();
+  }
 
   private void ApplyProfile(InputProfile newProfile) {
     var (eventLookup, actionLookup) = newProfile.GetManagerLookups();

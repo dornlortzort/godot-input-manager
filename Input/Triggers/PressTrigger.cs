@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class PressTrigger : InputTrigger {
@@ -6,8 +7,21 @@ public partial class PressTrigger : InputTrigger {
 
   private bool _wasAbove;
 
-  public override InputActionPhaseEnum Evaluate(InputSample input, float delta) {
-    var magnitude = input.Value.Length();
+  /// <summary>
+  /// Return the "high water mark" this frame.
+  /// </summary>
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
+    var result = InputActionPhaseEnum.None;
+    foreach (var sample in samplesThisFrame) {
+      var phase = EvaluateSample(sample);
+      if (result < phase) result = phase;
+    }
+
+    return result;
+  }
+
+  protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
+    var magnitude = sample.Value.Length();
 
     var isAbove = magnitude >= Threshold;
     InputActionPhaseEnum result;
@@ -21,7 +35,17 @@ public partial class PressTrigger : InputTrigger {
     return result;
   }
 
+  public override InputTrigger Clone() {
+    var clone = (PressTrigger)Duplicate();
+    clone.Reset();
+    return clone;
+  }
+
   public override void Reset() {
     _wasAbove = false;
+  }
+
+  public override string AsCodeDeclarationString() {
+    throw new NotImplementedException();
   }
 }

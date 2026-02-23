@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class FlickTrigger : InputTrigger {
@@ -21,8 +22,28 @@ public partial class FlickTrigger : InputTrigger {
   private bool _isPending;
   private bool _needsReset;
 
-  public override InputActionPhaseEnum Evaluate(InputSample input, float delta) {
-    var magnitude = input.Value.Length();
+
+  /// <summary>
+  /// Always return activated if it is achieved.
+  /// Let all events run without returning early in case the player clears
+  /// _needsReset by chance in the same frame they trigger Activated (highly
+  /// unlikely this would ever happen, but w/e). 
+  /// </summary>
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
+    _elapsed += delta;
+
+    var result = InputActionPhaseEnum.None;
+    foreach (var sample in samplesThisFrame) {
+      var phase = EvaluateSample(sample);
+      if (phase != InputActionPhaseEnum.Pending) _elapsed = 0;
+      if (result != InputActionPhaseEnum.Activated) result = phase;
+    }
+
+    return result;
+  }
+
+  protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
+    var magnitude = sample.Value.Length();
 
     if (_needsReset) {
       if (magnitude < StartPoint) {
@@ -33,41 +54,48 @@ public partial class FlickTrigger : InputTrigger {
     }
 
     if (!_isPending) {
+      if (magnitude < StartPoint) return InputActionPhaseEnum.None;
+
       // achieved flick in a single frame; no chance to become pending
       if (magnitude >= EndPoint) {
         _needsReset = true;
         return InputActionPhaseEnum.Activated;
       }
 
-      if (magnitude >= StartPoint) {
-        _isPending = true;
-        _elapsed = 0f;
-        return InputActionPhaseEnum.Pending;
-      }
+      _isPending = true;
+      return InputActionPhaseEnum.Pending;
+    }
 
+    // in pending state...
+    // too slow: cancel
+    if (_elapsed > TimeWindow) {
+      _isPending = false;
+      _needsReset = magnitude >= StartPoint;
       return InputActionPhaseEnum.None;
     }
 
-    _elapsed += delta;
-
+    // flick achieved:
     if (magnitude >= EndPoint) {
       _isPending = false;
       _needsReset = true;
       return InputActionPhaseEnum.Activated;
     }
 
-    if (_elapsed > TimeWindow) {
-      _isPending = false;
-      _needsReset = magnitude >= StartPoint;
-      return InputActionPhaseEnum.Canceled;
-    }
-
+    // still pending...
     return InputActionPhaseEnum.Pending;
+  }
+
+  public override InputTrigger Clone() {
+    throw new NotImplementedException();
   }
 
   public override void Reset() {
     _isPending = false;
     _needsReset = false;
     _elapsed = 0f;
+  }
+
+  public override string AsCodeDeclarationString() {
+    throw new NotImplementedException();
   }
 }

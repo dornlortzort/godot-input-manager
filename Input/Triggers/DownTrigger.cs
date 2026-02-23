@@ -1,32 +1,41 @@
 using System;
 using Godot;
 
-/// <summary>
-/// This is a DownTrigger
-/// </summary>
 public partial class DownTrigger : InputTrigger {
   [Export] public float Threshold { get; private set; } = 0.3f;
   private bool _isActive;
 
+  /// <summary>
+  /// Return the "high water mark" this frame.
+  /// </summary>
   public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
-    var magnitude = input.Value.Length();
-
-    var isAbove = magnitude >= Threshold;
-    switch (isAbove) {
-      case true when !_isActive:
-        _isActive = true;
-        return InputActionPhaseEnum.Activated;
-      case true when _isActive:
-        return InputActionPhaseEnum.Activated;
-      case false when _isActive:
-        _isActive = false;
-        return InputActionPhaseEnum.Completed;
-      default:
-        return InputActionPhaseEnum.None;
+    var result = InputActionPhaseEnum.None;
+    foreach (var sample in samplesThisFrame) {
+      var phase = EvaluateSample(sample);
+      if (phase > result) result = phase;
     }
+
+    return result;
+  }
+
+
+  protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
+    var magnitude = sample.Value.Length();
+    var isAbove = magnitude >= Threshold;
+    return isAbove ? InputActionPhaseEnum.Activated : InputActionPhaseEnum.None;
+  }
+
+  public override InputTrigger Clone() {
+    var clone = (DownTrigger)Duplicate();
+    clone.Reset();
+    return clone;
   }
 
   public override void Reset() {
     _isActive = false;
+  }
+
+  public override string AsCodeDeclarationString() {
+    throw new NotImplementedException();
   }
 }

@@ -18,13 +18,14 @@ public abstract partial class InputTrigger : Resource {
   public abstract InputActionPhaseEnum Evaluate(
     ReadOnlySpan<InputSample> samplesThisFrame, float delta);
 
-  public abstract string AsCodeDeclarationString();
 
-  protected abstract InputActionPhaseEnum EvaluateSample(ReadOnlySpan<InputSample> samplesThisFrame);
-
+  protected abstract InputActionPhaseEnum EvaluateSample(InputSample sample);
 
   /// <summary>
   ///   Called when the manager's InputMode or InputProfile changes
   /// </summary>
   public abstract InputTrigger Clone();
+
+  public abstract void Reset();
+  public abstract string AsCodeDeclarationString();
 }
