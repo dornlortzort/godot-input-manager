@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ss54saxicec5"]
+
+[ext_resource type="Script" uid="uid://chh6d2knqhgml" path="res://Input/Core/Manager/InputManager.cs" id="1_2opcb"]
+
+[node name="InputSystem" type="Node" unique_id=777493444]
+script = ExtResource("1_2opcb")

@@ -7,22 +7,14 @@ using Godot;
 using System.Collections.Generic;
 
 public static class InputActions {
-  public static readonly Vector2InputAction Move = new()
-    { ActionName = "Move", DisplayName = "Move", IsRemappable = true, BufferSeconds = 0f };
-
-  public static readonly BoolInputAction Jump = new()
-    { ActionName = "Jump", DisplayName = "Jump", IsRemappable = true, BufferSeconds = 0.25f };
-
-  public static readonly DeltaVector2InputAction Look = new()
-    { ActionName = "Look", DisplayName = "Look", IsRemappable = false, BufferSeconds = 0f };
-
-  public static readonly BoolInputAction Fire = new()
-    { ActionName = "Fire", DisplayName = "Fire", IsRemappable = true, BufferSeconds = 0.25f };
-
-  public static readonly IReadOnlyDictionary<StringName, InputAction> All = new Dictionary<StringName, InputAction> {
-    { "Move", Move },
-    { "Jump", Jump },
-    { "Look", Look },
-    { "Fire", Fire },
-  };
+    public static readonly BoolInputAction gameplay_jump = new() { ActionName = "gameplay_jump", DisplayName = "Jump", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0.2f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly BoolInputAction gameplay_attack = new() { ActionName = "gameplay_attack", DisplayName = "Attack", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly Vector3InputAction gameplay_move = new() { ActionName = "gameplay_move", DisplayName = "Move", ValueType = InputActionValueEnum.Vector3, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly BoolInputAction gameplay_menu = new() { ActionName = "gameplay_menu", DisplayName = "Open Menu", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly IReadOnlyDictionary<StringName, InputAction> All = new Dictionary<StringName, InputAction> {
+        { "gameplay_jump", gameplay_jump },
+        { "gameplay_attack", gameplay_attack },
+        { "gameplay_move", gameplay_move },
+        { "gameplay_menu", gameplay_menu },
+    };
 }

@@ -7,15 +7,37 @@ using Godot.Collections;
 [Tool]
 [GlobalClass]
 public partial class InputMode : Resource {
-  [Export] public string ModeName { get; private set; }
-  [Export] public Array<InputActionName> ActionNames { get; private set; }
-  [Export] public string Keyword { get; private set; }
+  [Export] public string ModeName { get; private set; } = "InputMode";
+
+  /*
+   *
+   * Editor tools
+   *
+   */
+  [ExportCategory("Quick actions")]
+  [Export]
+  public string Keyword { get; private set; } = "";
 
   [ExportToolButton("Add Actions Matching Keyword", Icon = "Add")]
   private Callable AddActionsButton => Callable.From(AddActionsThatMatchKeyword);
 
   [ExportToolButton("Remove Actions Matching Keyword", Icon = "Remove")]
   private Callable RemoveActionsButton => Callable.From(RemoveActionsThatMatchKeyword);
+
+  /*
+   *
+   * Actual data: Actions
+   *
+   */
+  [ExportCategory("Actions")] [Export] public Array<InputActionName> ActionNames { get; private set; } = new();
+
+  /// <summary>
+  /// Auto-updates the displayed name in the editor for easier readability
+  /// </summary>
+  public override void _ValidateProperty(Dictionary property) {
+    ResourceName =
+      $"Mode: '{ModeName}' ({ActionNames.Count} actions)";
+  }
 
   public bool IsValid(out string error) {
     var invalid = new List<string>();

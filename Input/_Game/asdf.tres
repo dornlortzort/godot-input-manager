@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="InputRegistry" format=3 uid="uid://b15e6v6jagbvv"]
+
+[ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="1_til3l"]
+[ext_resource type="Script" uid="uid://cs7xi4bmaampf" path="res://Input/Core/Config/InputMode.cs" id="2_fvnu7"]
+[ext_resource type="Resource" uid="uid://dvvyqvng5g3r1" path="res://Input/_Game/Actions/gameplay_jump.tres" id="2_wqil6"]
+[ext_resource type="Resource" uid="uid://bejy2uj3v7os7" path="res://Input/_Game/Actions/gameplay_attack.tres" id="3_6osi3"]
+[ext_resource type="Script" uid="uid://cu0c406aib5dq" path="res://Input/Core/Config/InputRegistry.cs" id="3_mt1q7"]
+[ext_resource type="Resource" uid="uid://cjn6rbdogm8mq" path="res://Input/_Game/Actions/gameplay_move.tres" id="4_3c4n2"]
+[ext_resource type="Resource" uid="uid://c3tgv46wcs3k4" path="res://Input/_Game/Actions/gameplay_menu.tres" id="5_r76je"]
+[ext_resource type="Resource" uid="uid://1myne8e324s8" path="res://Input/_Game/Profiles/default_profile.tres" id="6_3c4n2"]
+[ext_resource type="Resource" uid="uid://drlyc4gaew7op" path="res://Input/_Game/Modes/gameplay.tres" id="7_6osi3"]
+
+[resource]
+script = ExtResource("3_mt1q7")
+Actions = Array[ExtResource("1_til3l")]([ExtResource("2_wqil6"), ExtResource("3_6osi3"), ExtResource("4_3c4n2"), ExtResource("5_r76je")])
+Modes = Array[ExtResource("2_fvnu7")]([ExtResource("7_6osi3")])
+DefaultProfile = ExtResource("6_3c4n2")
+metadata/_custom_type_script = "uid://cu0c406aib5dq"

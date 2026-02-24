@@ -20,6 +20,7 @@ public partial class InputActionName : Resource {
   public InputActionName(string name) => Name = name;
 
   public override void _ValidateProperty(Dictionary property) {
+    ResourceName = Name;
     if (property["name"].AsStringName() != PropertyName.Name) return;
     property["hint"] = (int)PropertyHint.Enum;
 

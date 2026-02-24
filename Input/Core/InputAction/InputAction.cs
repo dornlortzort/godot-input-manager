@@ -24,14 +24,7 @@ public abstract partial class InputAction : GodotObject {
   ///
   /// Trigger Logic
   ///
-  private InputTrigger _trigger;
-
-  private DownTrigger _defaultTrigger = new();
-
-  public InputTrigger Trigger {
-    get => _trigger ?? _defaultTrigger;
-    set => _trigger = value;
-  }
+  public InputTrigger Trigger { get; init; }
 
 
   // These get set directly by generated code

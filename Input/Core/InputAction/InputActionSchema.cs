@@ -5,26 +5,44 @@ using Godot.Collections;
 [Tool]
 [GlobalClass]
 public partial class InputActionSchema : Resource {
-  [Export] private InputActionValueEnum Value = InputActionValueEnum.Bool;
-  [Export] private StringName ActionName = "ActionName";
-  [Export] private string DisplayName = "DisplayName";
+  [Export] private InputActionValueEnum _value = InputActionValueEnum.Bool;
+  [Export] private StringName _actionName = "ActionName";
+  [Export] private string _displayName = "DisplayName";
 
-  [Export] private bool IsRemappable = true;
-  [Export] private float BufferSeconds = 0f;
-  [Export] private bool IsDeltaInput = false;
+  [Export] private bool _isRemappable = true;
+  [Export] private float _bufferSeconds;
+  [Export] private bool _isDeltaInput;
 
-  [Export] private InputTrigger _trigger;
+  // todo: replace with `[Export] private InputTrigger _trigger` each new release to see if they've fixed it.
+  [Export] private Resource _triggerResource = new DownTrigger();
+
+  private InputTrigger _trigger;
+
+  public InputTrigger Trigger {
+    get => _trigger ??= _triggerResource as InputTrigger ?? new DownTrigger();
+    set {
+      _triggerResource = value;
+      _trigger = value;
+    }
+  }
 
   /// <summary>
   /// Auto-updates the displayed name in the editor for easier readability
   /// </summary>
   public override void _ValidateProperty(Dictionary property) {
+    // todo: this also simplifies if the above fix is made to polymorphic exports. 
+    var triggerScript = _triggerResource?.GetScript() ?? new Variant();
+    var triggerName = "DownTrigger";
+    if (triggerScript.VariantType != Variant.Type.Nil) {
+      triggerName = triggerScript.As<Script>().GetGlobalName();
+    }
+
     ResourceName =
-      $"{(IsDeltaInput ? "Δ" : "")}{Value} {ActionName} '{DisplayName}' | remap: {(IsRemappable ? "y" : "n")} | buf: {(BufferSeconds > 0 ? $"{BufferSeconds}s" : "none")}";
+      $"({(_isDeltaInput ? "Δ" : "")}{_value}) [{triggerName}] '{_actionName}' | remap: {(_isRemappable ? "y" : "n")} | buf: {(_bufferSeconds > 0 ? $"{_bufferSeconds}s" : "none")}";
   }
 
   public string AsCodeDeclarationString() {
-    var className = (IsDeltaInput, Value) switch {
+    var className = (IsDeltaInput: _isDeltaInput, Value: _value) switch {
       (false, InputActionValueEnum.Bool) => "BoolInputAction",
       (false, InputActionValueEnum.Axis1D) => "FloatInputAction",
       (false, InputActionValueEnum.Vector2) => "Vector2InputAction",
@@ -36,18 +54,18 @@ public partial class InputActionSchema : Resource {
       _ => throw new ArgumentOutOfRangeException()
     };
 
-    return $"    public static readonly {className} {ActionName} = new() {{ "
-           + $"ActionName = \"{ActionName}\", "
-           + $"DisplayName = \"{DisplayName}\", "
-           + $"ValueType = {nameof(InputActionValueEnum)}.{Value}, "
-           + $"IsRemappable = {IsRemappable.ToString().ToLower()}, "
-           + $"BufferSeconds = {BufferSeconds}f, "
-           + $"Trigger = {_trigger.AsCodeDeclarationString()} "
+    return $"    public static readonly {className} {_actionName} = new() {{ "
+           + $"ActionName = \"{_actionName}\", "
+           + $"DisplayName = \"{_displayName}\", "
+           + $"ValueType = {nameof(InputActionValueEnum)}.{_value}, "
+           + $"IsRemappable = {_isRemappable.ToString().ToLower()}, "
+           + $"BufferSeconds = {_bufferSeconds}f, "
+           + $"Trigger = {Trigger.AsCodeDeclarationString()} "
            + $"}};";
   }
 
   public string AsDictionaryEntryString() {
-    return $"        {{ \"{ActionName}\", {ActionName} }},";
+    return $"        {{ \"{_actionName}\", {_actionName} }},";
   }
 
   public int GetHash() => GD.Hash(AsCodeDeclarationString());

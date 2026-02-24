@@ -6,29 +6,6 @@ using System.Text;
 [GlobalClass]
 public partial class InputRegistry : Resource {
   /*
-   * Actions
-   */
-  [Export] public Array<InputActionSchema> Actions { get; private set; }
-  [Export] public string OutputPath { get; private set; } = "/generated/InputActions.gen.cs";
-
-  private string ResolvedPath => OutputPath.StartsWith("res://")
-    ? OutputPath
-    : "res://" + OutputPath.TrimStart('/');
-
-  private int _lastGeneratedHash;
-
-  /*
-   * Modes
-   */
-  [Export] public Array<InputMode> Modes { get; private set; }
-
-  /*
-   * default game Input Profile (bindings)
-   */
-  [Export] public InputProfile DefaultProfile { get; private set; }
-
-
-  /*
    *
    * Registry Sync and Validation
    *
@@ -39,22 +16,71 @@ public partial class InputRegistry : Resource {
   private void SaveAndValidate() {
     var sb = new StringBuilder();
     sb.AppendLine("--- InputRegistry is running SaveAndValidate ---");
-    sb.AppendLine("Actions sync state with code:");
-    sb.Append(SyncActionsAndGetStatus());
+    sb.AppendLine("\nInput Actions:");
+    if (Actions == null || Actions.Count == 0) {
+      sb.AppendLine("\t⚠ No actions defined — generating empty InputActions class.");
+    }
+
+    sb.AppendLine(WriteActionsAndGetStatus());
+
     sb.AppendLine("\nInput Modes:");
-    sb.Append(GetModesStatus());
+    if (Modes == null || Modes.Count == 0) {
+      sb.AppendLine("\t⚠ No input modes defined.");
+    } else {
+      sb.Append(GetModesStatus());
+    }
+
     sb.AppendLine("\nInput Profile:");
-    sb.Append(GetProfileStatus());
+    if (DefaultProfile == null) {
+      sb.AppendLine("\t⚠ No default input profile assigned.");
+    } else {
+      sb.Append(GetProfileStatus());
+    }
+
+    GD.Print(sb.ToString());
   }
 
-  private string SyncActionsAndGetStatus() {
-    var isSynced = GetHash() == _lastGeneratedHash;
-    if (isSynced) {
-      return "✓ Registry Actions are synced to code.";
-    } else {
-      RunGameActionsGenerator();
-      return "✓ (⚠ resolved) Registry Actions were out of sync — regenerated them.";
+  [ExportCategory("Game Input Actions")]
+  /*
+   * Actions
+   */
+  [Export]
+  public string SavePath { get; private set; } = "/generated/InputActions.gen.cs";
+
+  [Export] public Array<InputActionSchema> Actions { get; private set; } = new();
+
+  private string ResolvedPath => SavePath.StartsWith("res://")
+    ? SavePath
+    : "res://" + SavePath.TrimStart('/');
+
+  private int _lastGeneratedHash;
+
+  [ExportCategory("Game Input Modes")]
+  /*
+   * Modes
+   */
+  [Export]
+  public Array<InputMode> Modes { get; private set; } = new();
+
+
+  [ExportCategory("Game Input Profile")]
+  /*
+   * default game Input Profile (bindings)
+   */
+  [Export]
+  public InputProfile DefaultProfile { get; private set; }
+
+  private string WriteActionsAndGetStatus() {
+    var output = GenerateOutputString();
+    var hash = GD.Hash(output);
+    if (hash == _lastGeneratedHash) {
+      return "\t✓ Registry Actions are synced to code.";
     }
+
+    WriteToFile(output);
+    _lastGeneratedHash = hash;
+    ResourceSaver.Save(this);
+    return "\t✓ Registry Actions were out of sync — regenerated them.";
   }
 
   private string GetModesStatus() {
@@ -73,9 +99,8 @@ public partial class InputRegistry : Resource {
     !DefaultProfile.IsValid(out var errorMsg, "\t") ? errorMsg : "\t✓ Default InputProfile is valid";
 
 
-  private int GetHash() {
-    return GD.Hash(GenerateOutputString());
-  }
+  private int GetHash() => GD.Hash(GenerateOutputString());
+
 
   /*
    *
@@ -83,12 +108,10 @@ public partial class InputRegistry : Resource {
    *
    */
   /// <summary>
-  /// Generates an file which declares our static InputActions class.
+  /// Generates a file which declares our static InputActions class.
   /// Scans all the registry's Actions and generates an output string from them.
   /// </summary>
-  private void RunGameActionsGenerator() {
-    var output = GenerateOutputString();
-
+  private void WriteToFile(string generatedOutput) {
     var dir = ResolvedPath.GetBaseDir();
     if (!DirAccess.DirExistsAbsolute(dir)) {
       DirAccess.MakeDirRecursiveAbsolute(dir);
@@ -100,7 +123,7 @@ public partial class InputRegistry : Resource {
       return;
     }
 
-    file.StoreString(output);
+    file.StoreString(generatedOutput);
 
     _lastGeneratedHash = GetHash();
     ResourceSaver.Save(this);
@@ -127,7 +150,7 @@ public partial class InputRegistry : Resource {
     }
 
     sb.AppendLine(
-      "    public static readonly IReadOnlyDictionary<StringName, BaseInputAction> All = new Dictionary<StringName, BaseInputAction> {");
+      "    public static readonly IReadOnlyDictionary<StringName, InputAction> All = new Dictionary<StringName, InputAction> {");
     foreach (var schema in Actions) {
       sb.AppendLine(schema.AsDictionaryEntryString());
     }

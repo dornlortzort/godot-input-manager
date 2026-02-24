@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="InputMode" format=3 uid="uid://drlyc4gaew7op"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_vs4qr"]
+[ext_resource type="Script" uid="uid://cs7xi4bmaampf" path="res://Input/Core/Config/InputMode.cs" id="2_efjld"]
+
+[sub_resource type="Resource" id="Resource_vs4qr"]
+resource_name = "gameplay_jump"
+script = ExtResource("1_vs4qr")
+Name = &"gameplay_jump"
+
+[sub_resource type="Resource" id="Resource_efjld"]
+resource_name = "gameplay_attack"
+script = ExtResource("1_vs4qr")
+Name = &"gameplay_attack"
+
+[sub_resource type="Resource" id="Resource_vikq6"]
+resource_name = "gameplay_move"
+script = ExtResource("1_vs4qr")
+Name = &"gameplay_move"
+
+[sub_resource type="Resource" id="Resource_or1rn"]
+resource_name = "gameplay_menu"
+script = ExtResource("1_vs4qr")
+Name = &"gameplay_menu"
+
+[resource]
+resource_name = "InputMode: 'gameplay' (4 actions)"
+script = ExtResource("2_efjld")
+ModeName = "gameplay"
+ActionNames = Array[ExtResource("1_vs4qr")]([SubResource("Resource_vs4qr"), SubResource("Resource_efjld"), SubResource("Resource_vikq6"), SubResource("Resource_or1rn")])
+metadata/_custom_type_script = "uid://cs7xi4bmaampf"

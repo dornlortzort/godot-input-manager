@@ -1,12 +1,13 @@
 using System;
 using Godot;
 
+[GlobalClass]
 public partial class FlickTrigger : InputTrigger {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
-  public float StartPoint { get; private set; } = 0.5f;
+  public float StartPoint { get; set; } = 0.5f;
 
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
-  public float EndPoint { get; private set; } = 0.95f;
+  public float EndPoint { get; set; } = 0.95f;
 
   [Export] public float TimeWindow { get; private set; } = 0.25f;
 
@@ -17,6 +18,19 @@ public partial class FlickTrigger : InputTrigger {
   }
 
   [Export] public FlickAxis RestrictAxis { get; private set; } = FlickAxis.Any;
+
+  /// <summary>
+  /// local enums get a bit hairy... when in doubt, just try declaring one inline and see if it compiles.
+  /// </summary>
+  public override string AsCodeDeclarationString() {
+    return
+      $"new {nameof(FlickTrigger)}() {{ " +
+      $"StartPoint = {StartPoint}f, " +
+      $"EndPoint = {EndPoint}f, " +
+      $"TimeWindow = {TimeWindow}f, " +
+      $"RestrictAxis = {nameof(FlickTrigger)}.{nameof(FlickAxis)}.{RestrictAxis}" +
+      $"}}";
+  }
 
   private float _elapsed;
   private bool _isPending;
@@ -86,16 +100,14 @@ public partial class FlickTrigger : InputTrigger {
   }
 
   public override InputTrigger Clone() {
-    throw new NotImplementedException();
+    var clone = (FlickTrigger)Duplicate();
+    clone.Reset();
+    return clone;
   }
 
   public override void Reset() {
     _isPending = false;
     _needsReset = false;
     _elapsed = 0f;
-  }
-
-  public override string AsCodeDeclarationString() {
-    throw new NotImplementedException();
   }
 }

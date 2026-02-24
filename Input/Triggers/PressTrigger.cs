@@ -1,9 +1,14 @@
 using System;
 using Godot;
 
+[GlobalClass]
 public partial class PressTrigger : InputTrigger {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
-  public float Threshold { get; private set; } = 0.5f;
+  public float Threshold { get; set; } = 0.5f;
+
+  public override string AsCodeDeclarationString() {
+    return $"new {nameof(PressTrigger)}() {{ Threshold = {Threshold}f }}";
+  }
 
   private bool _wasAbove;
 
@@ -43,9 +48,5 @@ public partial class PressTrigger : InputTrigger {
 
   public override void Reset() {
     _wasAbove = false;
-  }
-
-  public override string AsCodeDeclarationString() {
-    throw new NotImplementedException();
   }
 }

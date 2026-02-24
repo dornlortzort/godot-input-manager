@@ -21,7 +21,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-InputManager="*uid://bcoj786t5s3tb"
+InputSystem="*uid://ss54saxicec5"
 
 [dotnet]
 

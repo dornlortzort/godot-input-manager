@@ -1,8 +1,14 @@
 using System;
 using Godot;
 
+[GlobalClass]
 public partial class DownTrigger : InputTrigger {
-  [Export] public float Threshold { get; private set; } = 0.3f;
+  [Export] public float Threshold { get; set; } = 0.3f;
+
+  public override string AsCodeDeclarationString() {
+    return $"new {nameof(DownTrigger)}() {{ Threshold = {Threshold}f }}";
+  }
+
   private bool _isActive;
 
   /// <summary>
@@ -18,7 +24,6 @@ public partial class DownTrigger : InputTrigger {
     return result;
   }
 
-
   protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
     var magnitude = sample.Value.Length();
     var isAbove = magnitude >= Threshold;
@@ -33,9 +38,5 @@ public partial class DownTrigger : InputTrigger {
 
   public override void Reset() {
     _isActive = false;
-  }
-
-  public override string AsCodeDeclarationString() {
-    throw new NotImplementedException();
   }
 }
