@@ -14,11 +14,8 @@ public abstract partial class DeltaInputAction<TValue> : InputAction where TValu
   /// Accumulates the input pipeline data's value, as opposed to setting it directly. 
   /// </summary>
   protected override void ConsumeSamples(ReadOnlySpan<InputSample> samplesThisFrame) {
+    _currentValue = Vector3.Zero;
     foreach (ref readonly var s in samplesThisFrame)
       _currentValue += s.Value;
-  }
-
-  public void ResetAccumulator() {
-    _currentValue = Vector3.Zero;
   }
 }

@@ -143,19 +143,21 @@ public partial class InputRegistry : Resource {
     sb.AppendLine("using Godot;");
     sb.AppendLine("using System.Collections.Generic;");
     sb.AppendLine();
-    sb.AppendLine("public static class InputActions {");
+    sb.AppendLine("public static partial class InputActions {");
 
     foreach (var schema in Actions) {
       sb.AppendLine(schema.AsCodeDeclarationString());
     }
 
-    sb.AppendLine(
-      "    public static readonly IReadOnlyDictionary<StringName, InputAction> All = new Dictionary<StringName, InputAction> {");
+    sb.AppendLine("    static InputActions() {");
+    sb.AppendLine("        All = new Dictionary<StringName, InputAction> {");
     foreach (var schema in Actions) {
       sb.AppendLine(schema.AsDictionaryEntryString());
     }
 
-    sb.AppendLine("    };");
+    sb.AppendLine("        };");
+    sb.AppendLine("    }");
+
     sb.AppendLine("}");
 
     return sb.ToString();

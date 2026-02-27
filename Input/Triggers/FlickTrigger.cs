@@ -1,6 +1,7 @@
 using System;
 using Godot;
 
+[Tool]
 [GlobalClass]
 public partial class FlickTrigger : InputTrigger {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
@@ -9,7 +10,7 @@ public partial class FlickTrigger : InputTrigger {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float EndPoint { get; set; } = 0.95f;
 
-  [Export] public float TimeWindow { get; private set; } = 0.25f;
+  [Export] public float TimeWindow { get; set; } = 0.25f;
 
   public enum FlickAxis {
     Any,
@@ -17,24 +18,24 @@ public partial class FlickTrigger : InputTrigger {
     Y
   }
 
-  [Export] public FlickAxis RestrictAxis { get; private set; } = FlickAxis.Any;
+  [Export] public FlickAxis RestrictAxis { get; set; } = FlickAxis.Any;
 
-  /// <summary>
-  /// local enums get a bit hairy... when in doubt, just try declaring one inline and see if it compiles.
-  /// </summary>
+  private double _elapsed;
+  private bool _isPending;
+  private bool _needsReset;
+
   public override string AsCodeDeclarationString() {
     return
       $"new {nameof(FlickTrigger)}() {{ " +
       $"StartPoint = {StartPoint}f, " +
       $"EndPoint = {EndPoint}f, " +
       $"TimeWindow = {TimeWindow}f, " +
+      // local enums get a bit hairy... when in doubt, just try declaring one inline and see if it compiles.
       $"RestrictAxis = {nameof(FlickTrigger)}.{nameof(FlickAxis)}.{RestrictAxis}" +
       $"}}";
   }
 
-  private float _elapsed;
-  private bool _isPending;
-  private bool _needsReset;
+  public override string GetResourceName() => nameof(FlickTrigger).Replace("Trigger", "");
 
 
   /// <summary>
@@ -43,7 +44,7 @@ public partial class FlickTrigger : InputTrigger {
   /// _needsReset by chance in the same frame they trigger Activated (highly
   /// unlikely this would ever happen, but w/e). 
   /// </summary>
-  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
     _elapsed += delta;
 
     var result = InputActionPhaseEnum.None;
@@ -57,7 +58,12 @@ public partial class FlickTrigger : InputTrigger {
   }
 
   protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
-    var magnitude = sample.Value.Length();
+    var magnitude = RestrictAxis switch {
+      FlickAxis.Any => sample.Value.Length(),
+      FlickAxis.X => sample.Value.X,
+      FlickAxis.Y => sample.Value.Y,
+      _ => sample.Value.Length(),
+    };
 
     if (_needsReset) {
       if (magnitude < StartPoint) {

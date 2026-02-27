@@ -9,7 +9,7 @@ using Godot.Collections;
 /// </summary>
 [Tool]
 [GlobalClass]
-public partial class InputActionName : Resource {
+public partial class InputActionName : Resource, ICustomNamedResource {
   [Export] public StringName Name { get; private set; }
 
   [Obsolete("Use InputActionName(StringName) instead")]
@@ -20,7 +20,7 @@ public partial class InputActionName : Resource {
   public InputActionName(string name) => Name = name;
 
   public override void _ValidateProperty(Dictionary property) {
-    ResourceName = Name;
+    ResourceName = GetResourceName();
     if (property["name"].AsStringName() != PropertyName.Name) return;
     property["hint"] = (int)PropertyHint.Enum;
 
@@ -31,6 +31,8 @@ public partial class InputActionName : Resource {
 
     property["hint_string"] = string.Join(",", InputActions.All.Keys);
   }
+
+  public string GetResourceName() => $"'{Name}'";
 
   // Converts a StringName to InputActionName, e.g. InputActionName x = someStringName;
   public static implicit operator InputActionName(StringName name) => new(name);

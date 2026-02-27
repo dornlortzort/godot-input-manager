@@ -9,7 +9,7 @@
 //   // The manager injects this reference when building the lookup
 //   public IInputAction ResolvedAction { get; set; }
 //   
-//   public override InputPhase Evaluate(InputPipelineValue input, float delta, InputDebugContext ctx) {
+//   public override InputPhase Evaluate(InputPipelineValue input, double delta, InputDebugContext ctx) {
 //     if (ResolvedAction?.Phase is not InputPhase.Activated) {
 //       return InputPhase.None;
 //     }
@@ -19,3 +19,4 @@
 //     throw new NotImplementedException();
 //   }
 // }
+

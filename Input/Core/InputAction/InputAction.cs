@@ -49,7 +49,7 @@ public abstract partial class InputAction : GodotObject {
   public float PhaseStartTime { get; private set; }
   public float ElapsedSecondsInPhase => (float)(Time.GetTicksMsec() / 1000.0 - PhaseStartTime);
 
-  public virtual void Process(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
+  public virtual void Process(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
     var resultPhase = Trigger.Evaluate(samplesThisFrame, delta);
     ConsumeSamples(samplesThisFrame);
 

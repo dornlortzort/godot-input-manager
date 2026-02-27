@@ -10,16 +10,18 @@ using Godot;
 /// - implement AsCodeDeclarationString() so that this can compile to static
 ///   types via the InputRegistry's generator.
 /// </summary>
+[Tool]
 [GlobalClass]
-public abstract partial class InputTrigger : Resource {
+public abstract partial class InputTrigger : Resource, ICustomNamedResource {
   public abstract string AsCodeDeclarationString();
+  public abstract string GetResourceName();
 
   /// <summary>
   ///   Evaluate the current input and return what phase the InputAction should be in
   ///   as a result of this value.
   /// </summary>
   public abstract InputActionPhaseEnum Evaluate(
-    ReadOnlySpan<InputSample> samplesThisFrame, float delta);
+    ReadOnlySpan<InputSample> samplesThisFrame, double delta);
 
   protected abstract InputActionPhaseEnum EvaluateSample(InputSample sample);
 

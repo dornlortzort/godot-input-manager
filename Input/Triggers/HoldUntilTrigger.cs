@@ -5,12 +5,16 @@ using Godot;
 ///   HoldUntilTrigger is the same as DownTrigger but you have to meet a Duration
 ///   requirement
 /// </summary>
+[Tool]
 [GlobalClass]
 public partial class HoldUntilTrigger : InputTrigger {
   [Export(PropertyHint.Range, "0.0,1.0,0.01")]
   public float Threshold { get; set; } = 0.3f;
 
   [Export] public float Duration { get; set; } = 0.5f;
+
+  private InputActionPhaseEnum _stateLastFrame;
+  private double _elapsed;
 
   public override string AsCodeDeclarationString() {
     return $"new {nameof(HoldUntilTrigger)}() {{ "
@@ -19,14 +23,13 @@ public partial class HoldUntilTrigger : InputTrigger {
            + $" }}";
   }
 
-  private InputActionPhaseEnum _stateLastFrame;
-  private float _elapsed;
+  public override string GetResourceName() => nameof(HoldUntilTrigger).Replace("Trigger", "");
 
   /// <summary>
   /// if any sample this frame evaluates to None, reset _elapsed.
   /// return the most recent (i.e. last) sample's result.
   /// </summary>
-  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, float delta) {
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
     _elapsed += delta;
 
     var result = InputActionPhaseEnum.None;

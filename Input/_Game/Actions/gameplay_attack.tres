@@ -3,14 +3,15 @@
 [ext_resource type="Script" uid="uid://tidqtw0bhaqj" path="res://Input/Triggers/PressTrigger.cs" id="1_0lxud"]
 [ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="2_fv5c1"]
 
-[sub_resource type="Resource" id="Resource_n4n4x"]
+[sub_resource type="Resource" id="Resource_fv5c1"]
 script = ExtResource("1_0lxud")
 metadata/_custom_type_script = "uid://tidqtw0bhaqj"
 
 [resource]
-resource_name = "Bool gameplay_attack 'Attack' | remap: y | buf: none"
+resource_name = "Bool 'gameplay_attack' [Press], remap:✓, buf:0.2s"
 script = ExtResource("2_fv5c1")
 _actionName = &"gameplay_attack"
 _displayName = "Attack"
-_triggerResource = SubResource("Resource_n4n4x")
+_bufferSeconds = 0.2
+_trigger = SubResource("Resource_fv5c1")
 metadata/_custom_type_script = "uid://c0vs50lnadt1a"

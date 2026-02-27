@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="InputActionSchema" format=3 uid="uid://dvvyqvng5g3r1"]
 
-[ext_resource type="Script" uid="uid://cr8p61s057o5x" path="res://Input/Triggers/DownTrigger.cs" id="1_2ef25"]
+[ext_resource type="Script" uid="uid://tidqtw0bhaqj" path="res://Input/Triggers/PressTrigger.cs" id="1_2ef25"]
 [ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="2_qynea"]
 
 [sub_resource type="Resource" id="Resource_qynea"]
 script = ExtResource("1_2ef25")
-metadata/_custom_type_script = "uid://cr8p61s057o5x"
+metadata/_custom_type_script = "uid://tidqtw0bhaqj"
 
 [resource]
-resource_name = "Bool gameplay_jump 'Jump' | remap: y | buf: 0.2s"
+resource_name = "Bool 'gameplay_jump' [Press], remap:✓, buf:0.2s"
 script = ExtResource("2_qynea")
 _actionName = &"gameplay_jump"
 _displayName = "Jump"
 _bufferSeconds = 0.2
-_triggerResource = SubResource("Resource_qynea")
+_trigger = SubResource("Resource_qynea")
 metadata/_custom_type_script = "uid://c0vs50lnadt1a"

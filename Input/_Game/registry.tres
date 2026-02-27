@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="InputRegistry" format=3 uid="uid://c7ni50h1morig"]
+
+[ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="1_sq67i"]
+[ext_resource type="Resource" uid="uid://bejy2uj3v7os7" path="res://Input/_Game/Actions/gameplay_attack.tres" id="3_uvjfs"]
+[ext_resource type="Resource" uid="uid://dvvyqvng5g3r1" path="res://Input/_Game/Actions/gameplay_jump.tres" id="4_ppsf4"]
+[ext_resource type="Resource" uid="uid://cjn6rbdogm8mq" path="res://Input/_Game/Actions/gameplay_move.tres" id="5_sq67i"]
+[ext_resource type="Resource" uid="uid://c3tgv46wcs3k4" path="res://Input/_Game/Actions/gameplay_menu.tres" id="6_dqbc0"]
+[ext_resource type="Resource" uid="uid://kbxrllhjdgmw" path="res://Input/_Game/Actions/gameplay_dash.tres" id="6_sq67i"]
+[ext_resource type="Script" uid="uid://cs7xi4bmaampf" path="res://Input/Core/Config/InputMode.cs" id="7_jvcg6"]
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="8_sq67i"]
+[ext_resource type="Script" uid="uid://cu0c406aib5dq" path="res://Input/Core/Config/InputRegistry.cs" id="9_sjsga"]
+
+[sub_resource type="Resource" id="Resource_dqbc0"]
+resource_name = "'gameplay_attack'"
+script = ExtResource("8_sq67i")
+Name = &"gameplay_attack"
+
+[sub_resource type="Resource" id="Resource_uvjfs"]
+resource_name = "'gameplay_dash'"
+script = ExtResource("8_sq67i")
+Name = &"gameplay_dash"
+
+[sub_resource type="Resource" id="Resource_rlvmv"]
+resource_name = "'gameplay_jump'"
+script = ExtResource("8_sq67i")
+Name = &"gameplay_jump"
+
+[sub_resource type="Resource" id="Resource_l3l5k"]
+resource_name = "'gameplay_move'"
+script = ExtResource("8_sq67i")
+Name = &"gameplay_move"
+
+[sub_resource type="Resource" id="Resource_6klh8"]
+resource_name = "'gameplay_menu'"
+script = ExtResource("8_sq67i")
+Name = &"gameplay_menu"
+
+[sub_resource type="Resource" id="Resource_jvcg6"]
+resource_name = "Mode: 'InputMode' (5 actions)"
+script = ExtResource("7_jvcg6")
+ActionNames = Array[ExtResource("8_sq67i")]([SubResource("Resource_dqbc0"), SubResource("Resource_uvjfs"), SubResource("Resource_rlvmv"), SubResource("Resource_l3l5k"), SubResource("Resource_6klh8")])
+metadata/_custom_type_script = "uid://cs7xi4bmaampf"
+
+[resource]
+script = ExtResource("9_sjsga")
+Actions = Array[ExtResource("1_sq67i")]([ExtResource("3_uvjfs"), ExtResource("6_sq67i"), ExtResource("4_ppsf4"), ExtResource("5_sq67i"), ExtResource("6_dqbc0")])
+Modes = Array[ExtResource("7_jvcg6")]([SubResource("Resource_jvcg6")])
+metadata/_custom_type_script = "uid://cu0c406aib5dq"

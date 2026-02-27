@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -26,10 +27,16 @@ public partial class InputMode : Resource {
 
   /*
    *
-   * Actual data: Actions
+   * Actual data
    *
    */
   [ExportCategory("Actions")] [Export] public Array<InputActionName> ActionNames { get; private set; } = new();
+
+  /*
+   *
+   * Helpers - Editor Validation
+   *
+   */
 
   /// <summary>
   /// Auto-updates the displayed name in the editor for easier readability

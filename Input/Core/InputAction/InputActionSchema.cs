@@ -4,7 +4,7 @@ using Godot.Collections;
 
 [Tool]
 [GlobalClass]
-public partial class InputActionSchema : Resource {
+public partial class InputActionSchema : Resource, ICustomNamedResource {
   [Export] private InputActionValueEnum _value = InputActionValueEnum.Bool;
   [Export] private StringName _actionName = "ActionName";
   [Export] private string _displayName = "DisplayName";
@@ -12,33 +12,22 @@ public partial class InputActionSchema : Resource {
   [Export] private bool _isRemappable = true;
   [Export] private float _bufferSeconds;
   [Export] private bool _isDeltaInput;
+  [Export] private InputTrigger _trigger = new DownTrigger();
 
-  // todo: replace with `[Export] private InputTrigger _trigger` each new release to see if they've fixed it.
-  [Export] private Resource _triggerResource = new DownTrigger();
-
-  private InputTrigger _trigger;
-
-  public InputTrigger Trigger {
-    get => _trigger ??= _triggerResource as InputTrigger ?? new DownTrigger();
-    set {
-      _triggerResource = value;
-      _trigger = value;
-    }
-  }
 
   /// <summary>
   /// Auto-updates the displayed name in the editor for easier readability
   /// </summary>
   public override void _ValidateProperty(Dictionary property) {
-    // todo: this also simplifies if the above fix is made to polymorphic exports. 
-    var triggerScript = _triggerResource?.GetScript() ?? new Variant();
-    var triggerName = "DownTrigger";
-    if (triggerScript.VariantType != Variant.Type.Nil) {
-      triggerName = triggerScript.As<Script>().GetGlobalName();
-    }
+    ResourceName = GetResourceName();
+  }
 
-    ResourceName =
-      $"({(_isDeltaInput ? "Δ" : "")}{_value}) [{triggerName}] '{_actionName}' | remap: {(_isRemappable ? "y" : "n")} | buf: {(_bufferSeconds > 0 ? $"{_bufferSeconds}s" : "none")}";
+  public string GetResourceName() {
+    var buf = _bufferSeconds > 0 ? $"{_bufferSeconds}s" : "✗";
+    var remap = _isRemappable ? "✓" : "✗";
+    var d = _isDeltaInput ? "Δ" : "";
+
+    return $"{d}{_value} '{_actionName}' [{_trigger.GetResourceName()}], remap:{remap}, buf:{buf}";
   }
 
   public string AsCodeDeclarationString() {
@@ -60,7 +49,7 @@ public partial class InputActionSchema : Resource {
            + $"ValueType = {nameof(InputActionValueEnum)}.{_value}, "
            + $"IsRemappable = {_isRemappable.ToString().ToLower()}, "
            + $"BufferSeconds = {_bufferSeconds}f, "
-           + $"Trigger = {Trigger.AsCodeDeclarationString()} "
+           + $"Trigger = {_trigger.AsCodeDeclarationString()} "
            + $"}};";
   }
 
@@ -68,5 +57,5 @@ public partial class InputActionSchema : Resource {
     return $"        {{ \"{_actionName}\", {_actionName} }},";
   }
 
-  public int GetHash() => GD.Hash(AsCodeDeclarationString());
+  private int GetHash() => GD.Hash(AsCodeDeclarationString());
 }

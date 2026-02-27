@@ -11,6 +11,12 @@ public partial class SimpleInputBinding : InputBinding {
   [Export] public Array<InputModifier> Modifiers { get; private set; }
 
   /// <summary>
+  /// Kind of a tricky detail: this gets assigned when an InputProfile builds into
+  /// a CompiledInputProfile for the manager.
+  /// </summary>
+  internal CompositeInputBinding Parent { get; set; }
+
+  /// <summary>
   /// This is a queue, as events come in for a frame they are added in order.
   /// </summary>
   private readonly List<InputSample> _samplesThisFrame = new(3);
@@ -41,7 +47,11 @@ public partial class SimpleInputBinding : InputBinding {
     if (InputSample.From(ActionName, e) is not { } data) return;
     foreach (var modifier in Modifiers)
       data = modifier.Process(data);
-    _samplesThisFrame.Add(data);
+
+    if (Parent is not null)
+      Parent.ReceiveChildSample(data);
+    else
+      _samplesThisFrame.Add(data);
   }
 
   /// <summary>
@@ -50,7 +60,7 @@ public partial class SimpleInputBinding : InputBinding {
   /// span into the internal buffer and must be consumed synchronously
   /// within <see cref="InputAction.Process"/>.
   /// </summary>
-  public void DrainTo(InputAction action, float delta) {
+  public override void DrainTo(InputAction action, double delta) {
     action.Process(CollectionsMarshal.AsSpan(_samplesThisFrame), delta);
     _samplesThisFrame.Clear();
   }
@@ -69,5 +79,20 @@ public partial class SimpleInputBinding : InputBinding {
     if (property["name"].AsStringName() != InputBinding.PropertyName.ActionName) return;
     property["hint"] = (int)PropertyHint.Enum;
     property["hint_string"] = string.Join(",", InputActions.All.Keys);
+
+    ResourceName = GetResourceName();
   }
+
+
+  public override string GetResourceName() => $"{ActionName}: {GetInputSourceName()}";
+
+  public string GetInputSourceName() => SourceEvent switch {
+    InputEventKey key => key.PhysicalKeycode != Key.None
+      ? key.PhysicalKeycode.ToString()
+      : key.Keycode.ToString(),
+    InputEventMouseButton mb => mb.ButtonIndex.ToString(),
+    InputEventJoypadButton jb => jb.ButtonIndex.ToString(),
+    InputEventJoypadMotion jm => $"Axis{jm.Axis}",
+    _ => SourceEvent?.GetType().Name ?? "Unset"
+  };
 }
