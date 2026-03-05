@@ -68,5 +68,5 @@ public partial class SingularInputBinding : InputBinding, IEventCapturableBindin
     ResourceName = GetResourceName();
   }
 
-  public override string GetResourceName() => $"{ActionName}: {GetInputSourceName(SourceEvent)}";
+  public override string GetResourceName() => $"{ActionName}: {GetBindingSourceName(this)}";
 }

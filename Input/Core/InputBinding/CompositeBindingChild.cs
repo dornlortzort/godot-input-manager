@@ -62,5 +62,5 @@ public partial class CompositeBindingChild : Resource, IEventCapturableBinding, 
     ResourceName = GetResourceName();
   }
 
-  public string GetResourceName() => InputBinding.GetInputSourceName(SourceEvent);
+  public string GetResourceName() => InputBinding.GetBindingSourceName(this);
 }

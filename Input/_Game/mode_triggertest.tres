@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="InputMode" format=3 uid="uid://cdpo3b3w1ub8y"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_m7y5m"]
+[ext_resource type="Script" uid="uid://cs7xi4bmaampf" path="res://Input/Core/Config/InputMode.cs" id="2_xv325"]
+
+[sub_resource type="Resource" id="Resource_6s4rm"]
+resource_name = "'ttest_down'"
+script = ExtResource("1_m7y5m")
+Name = &"ttest_down"
+
+[sub_resource type="Resource" id="Resource_blkym"]
+resource_name = "'ttest_flick'"
+script = ExtResource("1_m7y5m")
+Name = &"ttest_flick"
+
+[sub_resource type="Resource" id="Resource_gql7j"]
+resource_name = "'ttest_holduntil'"
+script = ExtResource("1_m7y5m")
+Name = &"ttest_holduntil"
+
+[sub_resource type="Resource" id="Resource_gj0yp"]
+resource_name = "'ttest_press'"
+script = ExtResource("1_m7y5m")
+Name = &"ttest_press"
+
+[resource]
+resource_name = "Mode: 'trigger_test' (4 actions)"
+script = ExtResource("2_xv325")
+ModeName = &"trigger_test"
+ActionNames = Array[ExtResource("1_m7y5m")]([SubResource("Resource_6s4rm"), SubResource("Resource_blkym"), SubResource("Resource_gql7j"), SubResource("Resource_gj0yp")])
+metadata/_custom_type_script = "uid://cs7xi4bmaampf"

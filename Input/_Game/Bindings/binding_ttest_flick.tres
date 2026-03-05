@@ -42,6 +42,7 @@ Name = &"ttest_flick"
 metadata/_custom_type_script = "uid://5ueuekg1gqoy"
 
 [resource]
+resource_name = "ttest_flick: (AxisLeftX -1, AxisLeftX 1, AxisLeftY -1, null)"
 script = ExtResource("6_25til")
 _actionName = SubResource("Resource_2jw52")
 Bindings = Array[Object]([SubResource("Resource_dduk2"), SubResource("Resource_dfy5o"), SubResource("Resource_4t6q8"), null])

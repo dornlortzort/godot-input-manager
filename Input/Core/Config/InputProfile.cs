@@ -14,40 +14,6 @@ public partial class InputProfile : Resource {
 
   /*
    *
-   * Validation: does my input profile have a binding for all of the game's actions?
-   *
-   *
-   */
-
-  [ExportToolButton("Validate Profile")]
-  private Callable ValidateProfileButton => Callable.From(ValidateProfileAndPrintResult);
-
-  private void ValidateProfileAndPrintResult() {
-    if (!IsValid(out string error)) {
-      GD.PushError($"Profile Invalid. Reason: {error}");
-    }
-
-    GD.Print("Profile is valid!");
-  }
-
-  public bool IsValid(out string error, string tabs = "") {
-    var missing = FindMissingActions();
-
-    if (missing.Count == 0) {
-      error = null;
-      return true;
-    }
-
-    var sb = new StringBuilder($"{tabs}Invalid profile. Missing bindings:");
-    foreach (var action in missing)
-      sb.AppendLine($"{tabs}  - {action.ActionName} ({action.ValueType})");
-
-    error = sb.ToString();
-    return false;
-  }
-
-  /*
-   *
    * Automation:
    *
    */
@@ -62,6 +28,88 @@ public partial class InputProfile : Resource {
     foreach (var action in missing)
       AllBindings.Add(CreateDefaultBinding(action));
   }
+
+
+  /*
+   *
+   * Validation:
+   * - does my input profile have a binding for all of the game's actions?
+   * - do all my bindings have an assigned SourceEvent, and do these each match the same DeviceType?
+   *
+   *
+   */
+
+  public bool IsValid(out string error, string tabs = "") {
+    var missing = FindMissingActions();
+
+    var sb = new StringBuilder();
+    if (missing.Count > 0) {
+      sb.AppendLine($"{tabs}Invalid profile. Missing bindings:");
+      foreach (var action in missing)
+        sb.AppendLine($"{tabs}  - {action.ActionName} ({action.ValueType})");
+
+      error = sb.ToString();
+      return false;
+    }
+
+    DeviceTypeEnum? expectedDevice = null;
+    foreach (var binding in AllBindings) {
+      switch (binding) {
+        case SingularInputBinding singular:
+          if (singular.SourceEvent is null) {
+            sb.AppendLine($"{tabs}  - '{singular.ActionName}' has no SourceEvent assigned.");
+            continue;
+          }
+
+          var singularDevice = InputBinding.GetBindingDeviceType(singular);
+          if (singularDevice == DeviceTypeEnum.Unsupported)
+            sb.AppendLine($"{tabs}  - '{singular.ActionName}' has an unsupported input type.");
+          else if (expectedDevice is null)
+            expectedDevice = singularDevice;
+          else if (singularDevice != expectedDevice)
+            sb.AppendLine($"{tabs}  - '{singular.ActionName}': expected {expectedDevice}, got {singularDevice}.");
+          break;
+
+        case CompositeInputBinding composite:
+          if (composite.Bindings is null) {
+            sb.AppendLine($"{tabs}  - '{composite.ActionName}' has no child bindings.");
+            break;
+          }
+
+          foreach (var child in composite.Bindings) {
+            if (child is null) {
+              sb.AppendLine($"{tabs}  - '{composite.ActionName}' has a null child binding.");
+              continue;
+            }
+
+            if (child.SourceEvent is null) {
+              sb.AppendLine($"{tabs}  - '{composite.ActionName}' has a child with no SourceEvent.");
+              continue;
+            }
+
+            var childDevice = InputBinding.GetBindingDeviceType(child);
+            if (childDevice == DeviceTypeEnum.Unsupported)
+              sb.AppendLine($"{tabs}  - '{composite.ActionName}' has a child with an unsupported input type.");
+            else if (expectedDevice is null)
+              expectedDevice = childDevice;
+            else if (childDevice != expectedDevice)
+              sb.AppendLine($"{tabs}  - '{composite.ActionName}': expected {expectedDevice}, got {childDevice}.");
+          }
+
+          break;
+      }
+    }
+
+    if (sb.Length > 0) {
+      sb.Insert(0, $"{tabs}Invalid profile. Binding errors:\n");
+      error = sb.ToString();
+      return false;
+    }
+
+    error = null;
+    return true;
+  }
+
 
   /*
    *

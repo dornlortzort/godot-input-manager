@@ -191,5 +191,5 @@ public partial class CompositeInputBinding : InputBinding {
   }
 
   public override string GetResourceName() =>
-    $"{ActionName}: ({string.Join(", ", Bindings.Select(b => GetInputSourceName(b.SourceEvent)))})";
+    $"{ActionName}: ({string.Join(", ", Bindings.Select(GetBindingSourceName))})";
 }

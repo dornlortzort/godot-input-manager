@@ -25,6 +25,7 @@
 [ext_resource type="Resource" uid="uid://by0b0aprjblyu" path="res://Input/_Game/Bindings/binding_ttest_flick.tres" id="20_wmbne"]
 [ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="21_d610a"]
 [ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="21_gql7j"]
+[ext_resource type="Resource" uid="uid://cdpo3b3w1ub8y" path="res://Input/_Game/mode_triggertest.tres" id="26_5fkff"]
 [ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="26_g5lxw"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_c2fmk"]
@@ -60,36 +61,9 @@ script = ExtResource("14_vixe7")
 AllBindings = Array[ExtResource("7_eukel")]([ExtResource("9_w7co2"), ExtResource("10_gcmxm"), ExtResource("11_v5tp3"), ExtResource("12_yvxyd"), ExtResource("13_d610a"), ExtResource("14_jli0s"), ExtResource("19_6s4rm"), ExtResource("20_wmbne"), SubResource("Resource_vx2t7"), SubResource("Resource_prmrk")])
 metadata/_custom_type_script = "uid://bc2tqq3gs1p5i"
 
-[sub_resource type="Resource" id="Resource_6s4rm"]
-resource_name = "'ttest_down'"
-script = ExtResource("21_d610a")
-Name = &"ttest_down"
-
-[sub_resource type="Resource" id="Resource_blkym"]
-resource_name = "'ttest_flick'"
-script = ExtResource("21_d610a")
-Name = &"ttest_flick"
-
-[sub_resource type="Resource" id="Resource_gql7j"]
-resource_name = "'ttest_holduntil'"
-script = ExtResource("21_d610a")
-Name = &"ttest_holduntil"
-
-[sub_resource type="Resource" id="Resource_gj0yp"]
-resource_name = "'ttest_press'"
-script = ExtResource("21_d610a")
-Name = &"ttest_press"
-
-[sub_resource type="Resource" id="Resource_vixe7"]
-resource_name = "Mode: 'trigger_test' (4 actions)"
-script = ExtResource("7_jvcg6")
-ModeName = &"trigger_test"
-ActionNames = Array[ExtResource("21_d610a")]([SubResource("Resource_6s4rm"), SubResource("Resource_blkym"), SubResource("Resource_gql7j"), SubResource("Resource_gj0yp")])
-metadata/_custom_type_script = "uid://cs7xi4bmaampf"
-
 [resource]
 script = ExtResource("9_sjsga")
 Actions = Array[ExtResource("1_sq67i")]([ExtResource("3_uvjfs"), ExtResource("7_sjsga"), ExtResource("6_sq67i"), ExtResource("4_ppsf4"), ExtResource("5_sq67i"), ExtResource("6_dqbc0"), ExtResource("8_yvxyd"), ExtResource("9_d610a"), ExtResource("10_vixe7"), ExtResource("11_jli0s")])
-Modes = Array[ExtResource("7_jvcg6")]([SubResource("Resource_vixe7")])
+Modes = Array[ExtResource("7_jvcg6")]([ExtResource("26_5fkff")])
 DefaultProfile = SubResource("Resource_c2fmk")
 metadata/_custom_type_script = "uid://cu0c406aib5dq"
