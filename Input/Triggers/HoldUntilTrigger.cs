@@ -29,11 +29,11 @@ public partial class HoldUntilTrigger : InputTrigger {
   /// if any sample this frame evaluates to None, reset _elapsed.
   /// return the most recent (i.e. last) sample's result.
   /// </summary>
-  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputPayload> payloadsThisFrame, double delta) {
     _elapsed += delta;
 
     var result = InputActionPhaseEnum.None;
-    foreach (var sample in samplesThisFrame) {
+    foreach (var sample in payloadsThisFrame) {
       result = EvaluateSample(sample);
       if (result == InputActionPhaseEnum.None) _elapsed = 0;
     }
@@ -41,8 +41,8 @@ public partial class HoldUntilTrigger : InputTrigger {
     return result;
   }
 
-  protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
-    var magnitude = sample.Value.Length();
+  protected override InputActionPhaseEnum EvaluateSample(InputPayload payload) {
+    var magnitude = payload.Length();
 
     var isAbove = magnitude >= Threshold;
     if (_stateLastFrame == InputActionPhaseEnum.None) {

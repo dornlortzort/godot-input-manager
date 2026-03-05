@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="InputActionSchema" format=3 uid="uid://dyj1w83c7jedc"]
+
+[ext_resource type="Script" uid="uid://cr8p61s057o5x" path="res://Input/Triggers/DownTrigger.cs" id="1_oyc1j"]
+[ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="2_0lt1j"]
+
+[sub_resource type="Resource" id="Resource_17lh2"]
+script = ExtResource("1_oyc1j")
+
+[resource]
+resource_name = "Vector2 'ttest_flick' [Down], remap:✓, buf:✗"
+script = ExtResource("2_0lt1j")
+_value = 2
+_actionName = &"ttest_flick"
+_displayName = "Flick Test"
+_trigger = SubResource("Resource_17lh2")
+metadata/_custom_type_script = "uid://c0vs50lnadt1a"

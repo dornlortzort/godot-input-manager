@@ -7,40 +7,28 @@ using Godot;
 using System.Collections.Generic;
 
 public static partial class InputActions {
-  public static readonly BoolInputAction gameplay_attack = new() {
-    ActionName = "gameplay_attack", DisplayName = "Attack", ValueType = InputActionValueEnum.Bool, IsRemappable = true,
-    BufferSeconds = 0.2f, Trigger = new PressTrigger() { Threshold = 0.5f }
-  };
-
-  public static readonly BoolInputAction gameplay_dash = new() {
-    ActionName = "gameplay_dash", DisplayName = "Dash", ValueType = InputActionValueEnum.Bool, IsRemappable = true,
-    BufferSeconds = 0f,
-    Trigger = new FlickTrigger()
-      { StartPoint = 0.5f, EndPoint = 0.95f, TimeWindow = 0.25f, RestrictAxis = FlickTrigger.FlickAxis.Any }
-  };
-
-  public static readonly BoolInputAction gameplay_jump = new() {
-    ActionName = "gameplay_jump", DisplayName = "Jump", ValueType = InputActionValueEnum.Bool, IsRemappable = true,
-    BufferSeconds = 0.2f, Trigger = new PressTrigger() { Threshold = 0.5f }
-  };
-
-  public static readonly Vector3InputAction gameplay_move = new() {
-    ActionName = "gameplay_move", DisplayName = "Move", ValueType = InputActionValueEnum.Vector3, IsRemappable = true,
-    BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f }
-  };
-
-  public static readonly BoolInputAction gameplay_menu = new() {
-    ActionName = "gameplay_menu", DisplayName = "Open Menu", ValueType = InputActionValueEnum.Bool, IsRemappable = true,
-    BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f }
-  };
-
-  static InputActions() {
-    All = new Dictionary<StringName, InputAction> {
-      { "gameplay_attack", gameplay_attack },
-      { "gameplay_dash", gameplay_dash },
-      { "gameplay_jump", gameplay_jump },
-      { "gameplay_move", gameplay_move },
-      { "gameplay_menu", gameplay_menu },
-    };
-  }
+    public static readonly BoolInputAction gameplay_attack = new() { ActionName = "gameplay_attack", DisplayName = "Attack", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0.2f, Trigger = new PressTrigger() { Threshold = 0.5f } };
+    public static readonly DeltaVector3InputAction gameplay_look = new() { ActionName = "gameplay_look", DisplayName = "Move", ValueType = InputActionValueEnum.Vector3, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly BoolInputAction gameplay_dash = new() { ActionName = "gameplay_dash", DisplayName = "Dash", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0.2f, Trigger = new PressTrigger() { Threshold = 0.5f } };
+    public static readonly BoolInputAction gameplay_jump = new() { ActionName = "gameplay_jump", DisplayName = "Jump", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0.2f, Trigger = new PressTrigger() { Threshold = 0.5f } };
+    public static readonly Vector3InputAction gameplay_move = new() { ActionName = "gameplay_move", DisplayName = "Move", ValueType = InputActionValueEnum.Vector3, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly BoolInputAction gameplay_menu = new() { ActionName = "gameplay_menu", DisplayName = "Open Menu", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly BoolInputAction ttest_down = new() { ActionName = "ttest_down", DisplayName = "Down Test", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly Vector2InputAction ttest_flick = new() { ActionName = "ttest_flick", DisplayName = "Flick Test", ValueType = InputActionValueEnum.Vector2, IsRemappable = true, BufferSeconds = 0f, Trigger = new DownTrigger() { Threshold = 0.3f } };
+    public static readonly BoolInputAction ttest_holduntil = new() { ActionName = "ttest_holduntil", DisplayName = "Hold Until Test", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0f, Trigger = new HoldUntilTrigger() { Threshold = 0.3f, Duration = 2f } };
+    public static readonly BoolInputAction ttest_press = new() { ActionName = "ttest_press", DisplayName = "Press Test", ValueType = InputActionValueEnum.Bool, IsRemappable = true, BufferSeconds = 0f, Trigger = new PressTrigger() { Threshold = 0.5f } };
+    static InputActions() {
+        All = new Dictionary<StringName, InputAction> {
+        { "gameplay_attack", gameplay_attack },
+        { "gameplay_look", gameplay_look },
+        { "gameplay_dash", gameplay_dash },
+        { "gameplay_jump", gameplay_jump },
+        { "gameplay_move", gameplay_move },
+        { "gameplay_menu", gameplay_menu },
+        { "ttest_down", ttest_down },
+        { "ttest_flick", ttest_flick },
+        { "ttest_holduntil", ttest_holduntil },
+        { "ttest_press", ttest_press },
+        };
+    }
 }

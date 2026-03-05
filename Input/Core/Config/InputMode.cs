@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -8,15 +9,23 @@ using Godot.Collections;
 [Tool]
 [GlobalClass]
 public partial class InputMode : Resource {
-  [Export] public string ModeName { get; private set; } = "InputMode";
+  [Export] public StringName ModeName { get; private set; } = "InputMode";
+
+  public static InputMode CreateDefaultInputMode() => new() {
+    ModeName = "default_mode",
+    ActionNames = new Array<InputActionName>(
+      InputActions.All.Keys.Select(k => new InputActionName(k)))
+  };
+
 
   /*
    *
    * Editor tools
    *
    */
-  [ExportCategory("Quick actions")]
+  [ExportCategory("Quick Config")]
   [Export]
+
   public string Keyword { get; private set; } = "";
 
   [ExportToolButton("Add Actions Matching Keyword", Icon = "Add")]

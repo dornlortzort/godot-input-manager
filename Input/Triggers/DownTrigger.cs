@@ -15,9 +15,9 @@ public partial class DownTrigger : InputTrigger {
   /// <summary>
   /// Return the "high water mark" this frame.
   /// </summary>
-  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputPayload> payloadsThisFrame, double delta) {
     var result = InputActionPhaseEnum.None;
-    foreach (var sample in samplesThisFrame) {
+    foreach (var sample in payloadsThisFrame) {
       var phase = EvaluateSample(sample);
       if (phase > result) result = phase;
     }
@@ -25,8 +25,8 @@ public partial class DownTrigger : InputTrigger {
     return result;
   }
 
-  protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
-    var magnitude = sample.Value.Length();
+  protected override InputActionPhaseEnum EvaluateSample(InputPayload payload) {
+    var magnitude = payload.Length();
     var isAbove = magnitude >= Threshold;
     return isAbove ? InputActionPhaseEnum.Activated : InputActionPhaseEnum.None;
   }

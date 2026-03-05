@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="InputProfile" format=3 uid="uid://clvkjpnqi1ue"]
+
+[ext_resource type="Script" uid="uid://d2evc0hli6w2t" path="res://Input/Core/InputBinding/InputBinding.cs" id="1_4dgx0"]
+[ext_resource type="Resource" uid="uid://8qxc20pnwbf4" path="res://Input/_Game/Bindings/binding_gameplay_move.tres" id="2_mepmk"]
+[ext_resource type="Resource" uid="uid://bhqoc1spklcm6" path="res://Input/_Game/Bindings/binding_gameplay_jump.tres" id="3_j3eae"]
+[ext_resource type="Resource" uid="uid://dc5ddle6jtx6r" path="res://Input/_Game/Bindings/binding_gameplay_attack.tres" id="4_tjgun"]
+[ext_resource type="Resource" uid="uid://ck0amdx2g5eam" path="res://Input/_Game/Bindings/binding_gameplay_dash.tres" id="5_ma27w"]
+[ext_resource type="Resource" uid="uid://b2wpqsxi8x10f" path="res://Input/_Game/Bindings/binding_gameplay_menu.tres" id="6_q45hm"]
+[ext_resource type="Resource" uid="uid://cba00hko4frss" path="res://Input/_Game/Bindings/binding_gameplay_look.tres" id="7_innci"]
+[ext_resource type="Script" uid="uid://bc2tqq3gs1p5i" path="res://Input/Core/Config/InputProfile.cs" id="11_snvvc"]
+
+[resource]
+script = ExtResource("11_snvvc")
+AllBindings = Array[ExtResource("1_4dgx0")]([ExtResource("2_mepmk"), ExtResource("3_j3eae"), ExtResource("4_tjgun"), ExtResource("5_ma27w"), ExtResource("6_q45hm"), ExtResource("7_innci")])
+metadata/_custom_type_script = "uid://bc2tqq3gs1p5i"

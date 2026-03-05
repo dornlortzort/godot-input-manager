@@ -6,43 +6,90 @@
 [ext_resource type="Resource" uid="uid://cjn6rbdogm8mq" path="res://Input/_Game/Actions/gameplay_move.tres" id="5_sq67i"]
 [ext_resource type="Resource" uid="uid://c3tgv46wcs3k4" path="res://Input/_Game/Actions/gameplay_menu.tres" id="6_dqbc0"]
 [ext_resource type="Resource" uid="uid://kbxrllhjdgmw" path="res://Input/_Game/Actions/gameplay_dash.tres" id="6_sq67i"]
+[ext_resource type="Script" uid="uid://d2evc0hli6w2t" path="res://Input/Core/InputBinding/InputBinding.cs" id="7_eukel"]
 [ext_resource type="Script" uid="uid://cs7xi4bmaampf" path="res://Input/Core/Config/InputMode.cs" id="7_jvcg6"]
-[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="8_sq67i"]
+[ext_resource type="Resource" uid="uid://dpuwqrqo34ni2" path="res://Input/_Game/Actions/gameplay_look.tres" id="7_sjsga"]
+[ext_resource type="Resource" uid="uid://2q5gg1bytvb5" path="res://Input/_Game/Actions/triggertest_down.tres" id="8_yvxyd"]
+[ext_resource type="Resource" uid="uid://dyj1w83c7jedc" path="res://Input/_Game/Actions/triggertest_flick.tres" id="9_d610a"]
 [ext_resource type="Script" uid="uid://cu0c406aib5dq" path="res://Input/Core/Config/InputRegistry.cs" id="9_sjsga"]
+[ext_resource type="Resource" uid="uid://dc5ddle6jtx6r" path="res://Input/_Game/Bindings/binding_gameplay_attack.tres" id="9_w7co2"]
+[ext_resource type="Resource" uid="uid://ck0amdx2g5eam" path="res://Input/_Game/Bindings/binding_gameplay_dash.tres" id="10_gcmxm"]
+[ext_resource type="Resource" uid="uid://s1x3ebyxdoc2" path="res://Input/_Game/Actions/triggertest_holduntil.tres" id="10_vixe7"]
+[ext_resource type="Resource" uid="uid://didcnfwr8ewuo" path="res://Input/_Game/Actions/triggertest_press.tres" id="11_jli0s"]
+[ext_resource type="Resource" uid="uid://bhqoc1spklcm6" path="res://Input/_Game/Bindings/binding_gameplay_jump.tres" id="11_v5tp3"]
+[ext_resource type="Resource" uid="uid://8qxc20pnwbf4" path="res://Input/_Game/Bindings/binding_gameplay_move.tres" id="12_yvxyd"]
+[ext_resource type="Resource" uid="uid://b2wpqsxi8x10f" path="res://Input/_Game/Bindings/binding_gameplay_menu.tres" id="13_d610a"]
+[ext_resource type="Resource" uid="uid://cqe8dtv5n1vxp" path="res://Input/_Game/Bindings/binding_gameplay_look.tres" id="14_jli0s"]
+[ext_resource type="Script" uid="uid://bc2tqq3gs1p5i" path="res://Input/Core/Config/InputProfile.cs" id="14_vixe7"]
+[ext_resource type="Resource" uid="uid://b4x1oh2kyv7d5" path="res://Input/_Game/Bindings/binding_ttest_down.tres" id="19_6s4rm"]
+[ext_resource type="Resource" uid="uid://by0b0aprjblyu" path="res://Input/_Game/Bindings/binding_ttest_flick.tres" id="20_wmbne"]
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="21_d610a"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="21_gql7j"]
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="26_g5lxw"]
 
-[sub_resource type="Resource" id="Resource_dqbc0"]
-resource_name = "'gameplay_attack'"
-script = ExtResource("8_sq67i")
-Name = &"gameplay_attack"
+[sub_resource type="InputEventKey" id="InputEventKey_c2fmk"]
+keycode = 32
 
-[sub_resource type="Resource" id="Resource_uvjfs"]
-resource_name = "'gameplay_dash'"
-script = ExtResource("8_sq67i")
-Name = &"gameplay_dash"
+[sub_resource type="Resource" id="Resource_0iocw"]
+resource_name = "'ttest_holduntil'"
+script = ExtResource("21_d610a")
+Name = &"ttest_holduntil"
 
-[sub_resource type="Resource" id="Resource_rlvmv"]
-resource_name = "'gameplay_jump'"
-script = ExtResource("8_sq67i")
-Name = &"gameplay_jump"
+[sub_resource type="Resource" id="Resource_vx2t7"]
+resource_name = "ttest_holduntil: Space"
+script = ExtResource("26_g5lxw")
+_actionName = SubResource("Resource_0iocw")
+SourceEvent = SubResource("InputEventKey_c2fmk")
 
-[sub_resource type="Resource" id="Resource_l3l5k"]
-resource_name = "'gameplay_move'"
-script = ExtResource("8_sq67i")
-Name = &"gameplay_move"
+[sub_resource type="InputEventKey" id="InputEventKey_xu0gq"]
+keycode = 32
 
-[sub_resource type="Resource" id="Resource_6klh8"]
-resource_name = "'gameplay_menu'"
-script = ExtResource("8_sq67i")
-Name = &"gameplay_menu"
+[sub_resource type="Resource" id="Resource_hu1n8"]
+resource_name = "'ttest_press'"
+script = ExtResource("21_d610a")
+Name = &"ttest_press"
 
-[sub_resource type="Resource" id="Resource_jvcg6"]
-resource_name = "Mode: 'InputMode' (5 actions)"
+[sub_resource type="Resource" id="Resource_prmrk"]
+resource_name = "ttest_press: Space"
+script = ExtResource("26_g5lxw")
+_actionName = SubResource("Resource_hu1n8")
+SourceEvent = SubResource("InputEventKey_xu0gq")
+
+[sub_resource type="Resource" id="Resource_c2fmk"]
+script = ExtResource("14_vixe7")
+AllBindings = Array[ExtResource("7_eukel")]([ExtResource("9_w7co2"), ExtResource("10_gcmxm"), ExtResource("11_v5tp3"), ExtResource("12_yvxyd"), ExtResource("13_d610a"), ExtResource("14_jli0s"), ExtResource("19_6s4rm"), ExtResource("20_wmbne"), SubResource("Resource_vx2t7"), SubResource("Resource_prmrk")])
+metadata/_custom_type_script = "uid://bc2tqq3gs1p5i"
+
+[sub_resource type="Resource" id="Resource_6s4rm"]
+resource_name = "'ttest_down'"
+script = ExtResource("21_d610a")
+Name = &"ttest_down"
+
+[sub_resource type="Resource" id="Resource_blkym"]
+resource_name = "'ttest_flick'"
+script = ExtResource("21_d610a")
+Name = &"ttest_flick"
+
+[sub_resource type="Resource" id="Resource_gql7j"]
+resource_name = "'ttest_holduntil'"
+script = ExtResource("21_d610a")
+Name = &"ttest_holduntil"
+
+[sub_resource type="Resource" id="Resource_gj0yp"]
+resource_name = "'ttest_press'"
+script = ExtResource("21_d610a")
+Name = &"ttest_press"
+
+[sub_resource type="Resource" id="Resource_vixe7"]
+resource_name = "Mode: 'trigger_test' (4 actions)"
 script = ExtResource("7_jvcg6")
-ActionNames = Array[ExtResource("8_sq67i")]([SubResource("Resource_dqbc0"), SubResource("Resource_uvjfs"), SubResource("Resource_rlvmv"), SubResource("Resource_l3l5k"), SubResource("Resource_6klh8")])
+ModeName = &"trigger_test"
+ActionNames = Array[ExtResource("21_d610a")]([SubResource("Resource_6s4rm"), SubResource("Resource_blkym"), SubResource("Resource_gql7j"), SubResource("Resource_gj0yp")])
 metadata/_custom_type_script = "uid://cs7xi4bmaampf"
 
 [resource]
 script = ExtResource("9_sjsga")
-Actions = Array[ExtResource("1_sq67i")]([ExtResource("3_uvjfs"), ExtResource("6_sq67i"), ExtResource("4_ppsf4"), ExtResource("5_sq67i"), ExtResource("6_dqbc0")])
-Modes = Array[ExtResource("7_jvcg6")]([SubResource("Resource_jvcg6")])
+Actions = Array[ExtResource("1_sq67i")]([ExtResource("3_uvjfs"), ExtResource("7_sjsga"), ExtResource("6_sq67i"), ExtResource("4_ppsf4"), ExtResource("5_sq67i"), ExtResource("6_dqbc0"), ExtResource("8_yvxyd"), ExtResource("9_d610a"), ExtResource("10_vixe7"), ExtResource("11_jli0s")])
+Modes = Array[ExtResource("7_jvcg6")]([SubResource("Resource_vixe7")])
+DefaultProfile = SubResource("Resource_c2fmk")
 metadata/_custom_type_script = "uid://cu0c406aib5dq"

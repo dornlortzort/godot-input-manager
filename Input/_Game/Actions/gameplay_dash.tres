@@ -1,16 +1,17 @@
 [gd_resource type="Resource" script_class="InputActionSchema" format=3 uid="uid://kbxrllhjdgmw"]
 
-[ext_resource type="Script" uid="uid://bnviyb34exoaq" path="res://Input/Triggers/FlickTrigger.cs" id="1_m3qdi"]
+[ext_resource type="Script" uid="uid://tidqtw0bhaqj" path="res://Input/Triggers/PressTrigger.cs" id="1_m3qdi"]
 [ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="2_xf63r"]
 
-[sub_resource type="Resource" id="Resource_m3qdi"]
+[sub_resource type="Resource" id="Resource_xf63r"]
 script = ExtResource("1_m3qdi")
-metadata/_custom_type_script = "uid://bnviyb34exoaq"
+metadata/_custom_type_script = "uid://tidqtw0bhaqj"
 
 [resource]
-resource_name = "Bool 'gameplay_dash' [Flick], remap:✓, buf:✗"
+resource_name = "Bool 'gameplay_dash' [Press], remap:✓, buf:0.2s"
 script = ExtResource("2_xf63r")
 _actionName = &"gameplay_dash"
 _displayName = "Dash"
-_trigger = SubResource("Resource_m3qdi")
+_bufferSeconds = 0.2
+_trigger = SubResource("Resource_xf63r")
 metadata/_custom_type_script = "uid://c0vs50lnadt1a"

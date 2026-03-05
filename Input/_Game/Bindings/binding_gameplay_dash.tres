@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SingularInputBinding" format=3 uid="uid://ck0amdx2g5eam"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_ki5ot"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_7c7d6"]
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="2_hrv7o"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ki5ot"]
+device = -1
+keycode = 70
+unicode = 102
+
+[sub_resource type="Resource" id="Resource_fipo1"]
+resource_name = "'gameplay_dash'"
+script = ExtResource("1_ki5ot")
+Name = &"gameplay_dash"
+
+[resource]
+resource_name = "gameplay_dash: F"
+script = ExtResource("2_hrv7o")
+_actionName = SubResource("Resource_fipo1")
+SourceEvent = SubResource("InputEventKey_ki5ot")

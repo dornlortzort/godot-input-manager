@@ -8,10 +8,12 @@ using Godot;
 /// Conventions:
 /// - Build a parameterized constructor wherever possible.
 /// </summary>
+[Tool]
+[GlobalClass]
 public abstract partial class InputModifier : Resource {
   /// <summary>
   ///   Transform an input value. Return the modified value.
   /// </summary>
   /// <param name="input">Current (possibly already modified) value.</param>
-  public abstract InputSample Process(InputSample input);
+  public abstract InputPayload Process(InputPayload input);
 }

@@ -1,9 +1,10 @@
 using System;
 using Godot;
 
+[Tool]
 [GlobalClass]
 public partial class ScaleModifier : InputModifier {
-  [Export] public float Scale { get; private set; }
+  [Export] public float Scale { get; private set; } = 1;
 
   [Obsolete("Use parameterized constructor")]
   public ScaleModifier() {
@@ -13,8 +14,5 @@ public partial class ScaleModifier : InputModifier {
     Scale = scale;
   }
 
-  public override InputSample Process(InputSample input) {
-    input.Value *= Scale;
-    return input;
-  }
+  public override InputPayload Process(InputPayload input) => input * Scale;
 }

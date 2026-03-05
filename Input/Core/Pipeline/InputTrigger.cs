@@ -21,12 +21,12 @@ public abstract partial class InputTrigger : Resource, ICustomNamedResource {
   ///   as a result of this value.
   /// </summary>
   public abstract InputActionPhaseEnum Evaluate(
-    ReadOnlySpan<InputSample> samplesThisFrame, double delta);
+    ReadOnlySpan<InputPayload> payloadsThisFrame, double delta);
 
-  protected abstract InputActionPhaseEnum EvaluateSample(InputSample sample);
+  protected abstract InputActionPhaseEnum EvaluateSample(InputPayload payload);
 
   /// <summary>
-  ///   Called when the manager's InputMode or InputProfile changes
+  ///   Called when the system's InputMode or InputProfile changes
   /// </summary>
   public abstract void Reset();
 

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="SingularInputBinding" format=3 uid="uid://cqe8dtv5n1vxp"]
+
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="1_2xsxh"]
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_qp2q5"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_c6mdw"]
+[ext_resource type="Script" uid="uid://bs33yeybrdpx6" path="res://Input/Modifiers/SwizzleModifier.cs" id="3_dxee4"]
+
+[sub_resource type="InputEventMouseMotion" id="InputEventMouseMotion_ksmg0"]
+
+[sub_resource type="Resource" id="Resource_8o5jf"]
+resource_name = "'gameplay_look'"
+script = ExtResource("1_qp2q5")
+Name = &"gameplay_look"
+metadata/_custom_type_script = "uid://5ueuekg1gqoy"
+
+[sub_resource type="Resource" id="Resource_5wico"]
+script = ExtResource("3_dxee4")
+Order = 2
+metadata/_custom_type_script = "uid://bs33yeybrdpx6"
+
+[resource]
+resource_name = "gameplay_look: InputEventMouseMotion"
+script = ExtResource("1_2xsxh")
+_actionName = SubResource("Resource_8o5jf")
+SourceEvent = SubResource("InputEventMouseMotion_ksmg0")
+_modifiers = Array[ExtResource("2_c6mdw")]([SubResource("Resource_5wico")])
+metadata/_custom_type_script = "uid://p6c2ojnfadb4"

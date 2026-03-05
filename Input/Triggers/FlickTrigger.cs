@@ -15,7 +15,8 @@ public partial class FlickTrigger : InputTrigger {
   public enum FlickAxis {
     Any,
     X,
-    Y
+    Y,
+    Z
   }
 
   [Export] public FlickAxis RestrictAxis { get; set; } = FlickAxis.Any;
@@ -44,26 +45,44 @@ public partial class FlickTrigger : InputTrigger {
   /// _needsReset by chance in the same frame they trigger Activated (highly
   /// unlikely this would ever happen, but w/e). 
   /// </summary>
-  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
+  public override InputActionPhaseEnum Evaluate(ReadOnlySpan<InputPayload> payloadsThisFrame, double delta) {
     _elapsed += delta;
 
     var result = InputActionPhaseEnum.None;
-    foreach (var sample in samplesThisFrame) {
+    foreach (var sample in payloadsThisFrame) {
       var phase = EvaluateSample(sample);
       if (phase != InputActionPhaseEnum.Pending) _elapsed = 0;
       if (result != InputActionPhaseEnum.Activated) result = phase;
     }
 
+    // edge case. If we early-return from all EvaluateSamples (say there's no events, or the only provided events
+    // were null for some reason) we still need to check if we've timed out of our trigger window.
+    if (_isPending && _elapsed > TimeWindow && result != InputActionPhaseEnum.Activated) {
+      _isPending = false;
+      // _needsReset stays unchanged — no sample to confirm we're below StartPoint
+      result = InputActionPhaseEnum.None;
+    }
+
     return result;
   }
 
-  protected override InputActionPhaseEnum EvaluateSample(InputSample sample) {
+  //todo: bug here. magnitude should always be positive. But question: what to do about null cases?
+  protected override InputActionPhaseEnum EvaluateSample(InputPayload payload) {
     var magnitude = RestrictAxis switch {
-      FlickAxis.Any => sample.Value.Length(),
-      FlickAxis.X => sample.Value.X,
-      FlickAxis.Y => sample.Value.Y,
-      _ => sample.Value.Length(),
+      FlickAxis.Any => payload.Length(),
+      FlickAxis.X => payload.X,
+      FlickAxis.Y => payload.Y,
+      FlickAxis.Z => payload.Z,
+      _ => payload.Length(),
     };
+
+    // This event doesn't touch our axis — ignore it entirely
+    if (!magnitude.HasValue)
+      return _isPending
+        ? InputActionPhaseEnum.Pending
+        : InputActionPhaseEnum.None;
+
+    var mag = Math.Abs(magnitude.Value);
 
     if (_needsReset) {
       if (magnitude < StartPoint) {

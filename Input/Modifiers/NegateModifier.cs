@@ -1,11 +1,9 @@
 using Godot;
 
+[Tool]
 [GlobalClass]
 public partial class NegateModifier : InputModifier {
-  public override InputSample Process(InputSample input) {
-    input.Value *= -1;
-    return input;
-  }
+  public override InputPayload Process(InputPayload input) => -input;
 
   public NegateModifier() {
   }

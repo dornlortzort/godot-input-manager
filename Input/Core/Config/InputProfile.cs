@@ -31,8 +31,7 @@ public partial class InputProfile : Resource {
   }
 
   public bool IsValid(out string error, string tabs = "") {
-    var bound = GetBoundActionNames();
-    var missing = FindMissingActions(bound);
+    var missing = FindMissingActions();
 
     if (missing.Count == 0) {
       error = null;
@@ -58,8 +57,7 @@ public partial class InputProfile : Resource {
 
   private void AutoPopulateMissingBindings() {
     AllBindings ??= [];
-    var bound = GetBoundActionNames();
-    var missing = FindMissingActions(bound);
+    var missing = FindMissingActions();
 
     foreach (var action in missing)
       AllBindings.Add(CreateDefaultBinding(action));
@@ -70,9 +68,10 @@ public partial class InputProfile : Resource {
    * Helpers
    *
    */
-  private HashSet<StringName> GetBoundActionNames() {
+
+  private List<InputAction> FindMissingActions() {
     var bound = new HashSet<StringName>();
-    if (AllBindings == null) return bound;
+    if (AllBindings == null) return [];
 
     foreach (var binding in AllBindings) {
       if (binding?.ActionName is not null) {
@@ -80,13 +79,9 @@ public partial class InputProfile : Resource {
         continue;
       }
 
-      GD.PushWarning("A binding was found without an ActionName. You better be fixing this.");
+      GD.PushWarning("A binding was found without an ActionName.");
     }
 
-    return bound;
-  }
-
-  private static List<InputAction> FindMissingActions(HashSet<StringName> bound) {
     var missing = new List<InputAction>();
     foreach (var action in InputActions.All.Values) {
       if (!bound.Contains(action.ActionName))
@@ -98,9 +93,9 @@ public partial class InputProfile : Resource {
 
   private static InputBinding CreateDefaultBinding(InputAction action) {
     return action.ValueType switch {
-      InputActionValueEnum.Bool => new SimpleInputBinding(action.ActionName,
+      InputActionValueEnum.Bool => new SingularInputBinding(action.ActionName,
         new InputEventKey() { Keycode = Key.Space }),
-      InputActionValueEnum.Axis1D => new SimpleInputBinding(action.ActionName, new InputEventJoypadMotion()),
+      InputActionValueEnum.Axis1D => new SingularInputBinding(action.ActionName, new InputEventJoypadMotion()),
       InputActionValueEnum.Vector2 => GetDefault2D(action.ActionName),
       InputActionValueEnum.Vector3 => GetDefault3D(action.ActionName),
       _ => throw new ArgumentOutOfRangeException()
@@ -108,30 +103,26 @@ public partial class InputProfile : Resource {
   }
 
   private static CompositeInputBinding GetDefault2D(InputActionName actionName) => new(actionName, [
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.W },
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.W },
       [new SwizzleModifier(order: SwizzleModifier.SwizzleOrder.YXZ)]),
 
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.A },
-      [new NegateModifier()]),
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.A }, [new NegateModifier()]),
 
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.S },
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.S },
       [new SwizzleModifier(order: SwizzleModifier.SwizzleOrder.YXZ), new NegateModifier()]),
 
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.D },
-      [])
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.D }, [])
   ]);
 
   private static CompositeInputBinding GetDefault3D(InputActionName actionName) => new(actionName, [
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.W },
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.W },
       [new SwizzleModifier(order: SwizzleModifier.SwizzleOrder.ZYX), new NegateModifier()]),
 
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.A },
-      [new NegateModifier()]),
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.A }, [new NegateModifier()]),
 
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.S },
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.S },
       [new SwizzleModifier(order: SwizzleModifier.SwizzleOrder.ZYX)]),
 
-    new SimpleInputBinding(null, new InputEventKey() { Keycode = Key.D },
-      [])
+    new CompositeBindingChild(new InputEventKey() { Keycode = Key.D }, [])
   ]);
 }

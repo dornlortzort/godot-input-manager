@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SingularInputBinding" format=3 uid="uid://b4x1oh2kyv7d5"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_ihj1q"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_sh772"]
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="3_7wdka"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_32k1h"]
+keycode = 32
+
+[sub_resource type="Resource" id="Resource_oq4dm"]
+resource_name = "'ttest_down'"
+script = ExtResource("1_ihj1q")
+Name = &"ttest_down"
+
+[resource]
+resource_name = "ttest_down: Space"
+script = ExtResource("3_7wdka")
+_actionName = SubResource("Resource_oq4dm")
+SourceEvent = SubResource("InputEventKey_32k1h")

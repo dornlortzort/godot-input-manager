@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="CompositeInputBinding" format=3 uid="uid://8qxc20pnwbf4"]
+
+[ext_resource type="Script" uid="uid://dcds2p1npwhdn" path="res://Input/Core/InputBinding/CompositeBindingChild.cs" id="1_e73hh"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_3jca3"]
+[ext_resource type="Script" uid="uid://bs33yeybrdpx6" path="res://Input/Modifiers/SwizzleModifier.cs" id="3_mwdls"]
+[ext_resource type="Script" uid="uid://verou4dmwqv3" path="res://Input/Modifiers/NegateModifier.cs" id="4_jdjm6"]
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="5_a2uae"]
+[ext_resource type="Script" uid="uid://dh5uqe4ec81mw" path="res://Input/Core/InputBinding/CompositeInputBinding.cs" id="6_6y2jm"]
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_e73hh"]
+button_mask = 1
+button_index = 1
+pressed = true
+
+[sub_resource type="Resource" id="Resource_1de0l"]
+script = ExtResource("3_mwdls")
+Order = 5
+
+[sub_resource type="Resource" id="Resource_g5lxw"]
+script = ExtResource("4_jdjm6")
+
+[sub_resource type="Resource" id="Resource_75757"]
+resource_name = "Left MB"
+script = ExtResource("1_e73hh")
+SourceEvent = SubResource("InputEventMouseButton_e73hh")
+_modifiers = Array[ExtResource("2_3jca3")]([SubResource("Resource_1de0l"), SubResource("Resource_g5lxw")])
+
+[sub_resource type="InputEventKey" id="InputEventKey_3jca3"]
+device = -1
+keycode = 87
+unicode = 119
+
+[sub_resource type="Resource" id="Resource_dcpx8"]
+script = ExtResource("4_jdjm6")
+
+[sub_resource type="Resource" id="Resource_h3v3s"]
+resource_name = "W"
+script = ExtResource("1_e73hh")
+SourceEvent = SubResource("InputEventKey_3jca3")
+_modifiers = Array[ExtResource("2_3jca3")]([SubResource("Resource_dcpx8")])
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_mwdls"]
+button_mask = 2
+position = Vector2(691, 10)
+global_position = Vector2(700, 58)
+button_index = 2
+pressed = true
+
+[sub_resource type="Resource" id="Resource_euqwr"]
+script = ExtResource("3_mwdls")
+Order = 5
+
+[sub_resource type="Resource" id="Resource_0u3ga"]
+resource_name = "Right MB"
+script = ExtResource("1_e73hh")
+SourceEvent = SubResource("InputEventMouseButton_mwdls")
+_modifiers = Array[ExtResource("2_3jca3")]([SubResource("Resource_euqwr")])
+
+[sub_resource type="InputEventKey" id="InputEventKey_jdjm6"]
+device = -1
+keycode = 69
+unicode = 101
+
+[sub_resource type="Resource" id="Resource_bcljo"]
+resource_name = "E"
+script = ExtResource("1_e73hh")
+SourceEvent = SubResource("InputEventKey_jdjm6")
+_modifiers = Array[ExtResource("2_3jca3")]([])
+
+[sub_resource type="Resource" id="Resource_ovs1h"]
+resource_name = "'gameplay_move'"
+script = ExtResource("5_a2uae")
+Name = &"gameplay_move"
+
+[resource]
+resource_name = "gameplay_move: (Left MB, W, Right MB, E)"
+script = ExtResource("6_6y2jm")
+_actionName = SubResource("Resource_ovs1h")
+Bindings = Array[ExtResource("1_e73hh")]([SubResource("Resource_75757"), SubResource("Resource_h3v3s"), SubResource("Resource_0u3ga"), SubResource("Resource_bcljo")])
+Modifiers = Array[ExtResource("2_3jca3")]([])

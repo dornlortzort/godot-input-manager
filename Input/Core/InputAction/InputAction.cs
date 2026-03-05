@@ -49,9 +49,9 @@ public abstract partial class InputAction : GodotObject {
   public float PhaseStartTime { get; private set; }
   public float ElapsedSecondsInPhase => (float)(Time.GetTicksMsec() / 1000.0 - PhaseStartTime);
 
-  public virtual void Process(ReadOnlySpan<InputSample> samplesThisFrame, double delta) {
-    var resultPhase = Trigger.Evaluate(samplesThisFrame, delta);
-    ConsumeSamples(samplesThisFrame);
+  public virtual void Process(ReadOnlySpan<InputPayload> payloadsThisFrame, double delta) {
+    var resultPhase = Trigger.Evaluate(payloadsThisFrame, delta);
+    ConsumePayloads(payloadsThisFrame);
 
     if (resultPhase != Phase) {
       PhaseStartTime = (float)(Time.GetTicksMsec() / 1000.0);
@@ -76,5 +76,5 @@ public abstract partial class InputAction : GodotObject {
     }
   }
 
-  protected abstract void ConsumeSamples(ReadOnlySpan<InputSample> samplesThisFrame);
+  protected abstract void ConsumePayloads(ReadOnlySpan<InputPayload> payloadsThisFrame);
 }

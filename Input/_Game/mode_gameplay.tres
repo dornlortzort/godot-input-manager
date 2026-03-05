@@ -3,29 +3,39 @@
 [ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_3hum6"]
 [ext_resource type="Script" uid="uid://cs7xi4bmaampf" path="res://Input/Core/Config/InputMode.cs" id="2_4ep3h"]
 
-[sub_resource type="Resource" id="Resource_vs4qr"]
-resource_name = "gameplay_jump"
-script = ExtResource("1_3hum6")
-Name = &"gameplay_jump"
-
-[sub_resource type="Resource" id="Resource_efjld"]
-resource_name = "gameplay_attack"
+[sub_resource type="Resource" id="Resource_3hum6"]
+resource_name = "'gameplay_attack'"
 script = ExtResource("1_3hum6")
 Name = &"gameplay_attack"
 
-[sub_resource type="Resource" id="Resource_vikq6"]
-resource_name = "gameplay_move"
+[sub_resource type="Resource" id="Resource_4ep3h"]
+resource_name = "'gameplay_look'"
+script = ExtResource("1_3hum6")
+Name = &"gameplay_look"
+
+[sub_resource type="Resource" id="Resource_b1dgn"]
+resource_name = "'gameplay_dash'"
+script = ExtResource("1_3hum6")
+Name = &"gameplay_dash"
+
+[sub_resource type="Resource" id="Resource_pb06f"]
+resource_name = "'gameplay_jump'"
+script = ExtResource("1_3hum6")
+Name = &"gameplay_jump"
+
+[sub_resource type="Resource" id="Resource_mqh4i"]
+resource_name = "'gameplay_move'"
 script = ExtResource("1_3hum6")
 Name = &"gameplay_move"
 
-[sub_resource type="Resource" id="Resource_or1rn"]
-resource_name = "gameplay_menu"
+[sub_resource type="Resource" id="Resource_gjkfb"]
+resource_name = "'gameplay_menu'"
 script = ExtResource("1_3hum6")
 Name = &"gameplay_menu"
 
 [resource]
-resource_name = "Mode: 'gameplay' (4 actions)"
+resource_name = "Mode: 'gameplay' (6 actions)"
 script = ExtResource("2_4ep3h")
-ModeName = "gameplay"
-ActionNames = Array[ExtResource("1_3hum6")]([SubResource("Resource_vs4qr"), SubResource("Resource_efjld"), SubResource("Resource_vikq6"), SubResource("Resource_or1rn")])
+ModeName = &"gameplay"
+ActionNames = Array[ExtResource("1_3hum6")]([SubResource("Resource_3hum6"), SubResource("Resource_4ep3h"), SubResource("Resource_b1dgn"), SubResource("Resource_pb06f"), SubResource("Resource_mqh4i"), SubResource("Resource_gjkfb")])
 metadata/_custom_type_script = "uid://cs7xi4bmaampf"

@@ -1,18 +1,27 @@
-using System;
 using Godot;
 
+
+[Tool]
+[GlobalClass]
 public abstract partial class InputBinding : Resource, ICustomNamedResource {
-  [Export] public InputActionName ActionName { get; protected set; }
-
-  [Obsolete("Use parameterized constructor")]
-  protected InputBinding() {
-  }
-
-  protected InputBinding(InputActionName actionName) {
-    ActionName = actionName;
-  }
+  public abstract InputActionName ActionName { get; }
 
   public abstract string GetResourceName();
 
   public abstract void DrainTo(InputAction action, double delta);
+
+  /*
+   *
+   * Tooling
+   *
+   */
+  public static string GetInputSourceName(InputEvent source) => source switch {
+    InputEventKey key => key.PhysicalKeycode != Key.None
+      ? key.PhysicalKeycode.ToString()
+      : key.Keycode.ToString(),
+    InputEventMouseButton mb => $"{mb.ButtonIndex} MB",
+    InputEventJoypadButton jb => jb.ButtonIndex.ToString(),
+    InputEventJoypadMotion jm => $"Axis{jm.Axis} {jm.AxisValue}",
+    _ => source?.GetType().Name ?? "Unset"
+  };
 }

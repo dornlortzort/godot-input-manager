@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SingularInputBinding" format=3 uid="uid://dc5ddle6jtx6r"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_rt21o"]
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="2_hpss7"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_rt21o"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_hpss7"]
+device = -1
+keycode = 82
+unicode = 114
+
+[sub_resource type="Resource" id="Resource_w4tji"]
+resource_name = "'gameplay_attack'"
+script = ExtResource("1_rt21o")
+Name = &"gameplay_attack"
+
+[resource]
+resource_name = "gameplay_attack: R"
+script = ExtResource("2_hpss7")
+_actionName = SubResource("Resource_w4tji")
+SourceEvent = SubResource("InputEventKey_hpss7")

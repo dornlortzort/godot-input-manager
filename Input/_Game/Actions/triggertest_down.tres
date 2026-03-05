@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="InputActionSchema" format=3 uid="uid://2q5gg1bytvb5"]
+
+[ext_resource type="Script" uid="uid://cr8p61s057o5x" path="res://Input/Triggers/DownTrigger.cs" id="1_d8o0r"]
+[ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="2_npie3"]
+
+[sub_resource type="Resource" id="Resource_17lh2"]
+script = ExtResource("1_d8o0r")
+
+[resource]
+resource_name = "Bool 'ttest_down' [Down], remap:✓, buf:✗"
+script = ExtResource("2_npie3")
+_actionName = &"ttest_down"
+_displayName = "Down Test"
+_trigger = SubResource("Resource_17lh2")
+metadata/_custom_type_script = "uid://c0vs50lnadt1a"

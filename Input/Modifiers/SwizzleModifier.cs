@@ -1,6 +1,7 @@
 using System;
 using Godot;
 
+[Tool]
 [GlobalClass]
 public partial class SwizzleModifier : InputModifier {
   public enum SwizzleOrder {
@@ -24,17 +25,13 @@ public partial class SwizzleModifier : InputModifier {
     Order = order;
   }
 
-  public override InputSample Process(InputSample input) {
-    var v = input.Value;
-    input.Value = Order switch {
-      SwizzleOrder.XYZ => v,
-      SwizzleOrder.YXZ => new(v.Y, v.X, v.Z),
-      SwizzleOrder.XZY => new(v.X, v.Z, v.Y),
-      SwizzleOrder.YZX => new(v.Y, v.Z, v.X),
-      SwizzleOrder.ZXY => new(v.Z, v.X, v.Y),
-      SwizzleOrder.ZYX => new(v.Z, v.Y, v.X),
-      _ => v
-    };
-    return input;
-  }
+  public override InputPayload Process(InputPayload input) => Order switch {
+    SwizzleOrder.XYZ => input,
+    SwizzleOrder.YXZ => new(input.Y, input.X, input.Z),
+    SwizzleOrder.XZY => new(input.X, input.Z, input.Y),
+    SwizzleOrder.YZX => new(input.Y, input.Z, input.X),
+    SwizzleOrder.ZXY => new(input.Z, input.X, input.Y),
+    SwizzleOrder.ZYX => new(input.Z, input.Y, input.X),
+    _ => input
+  };
 }

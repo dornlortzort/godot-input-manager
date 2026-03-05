@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SingularInputBinding" format=3 uid="uid://bhqoc1spklcm6"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_6d8vs"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_wcx12"]
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="2_wt8tq"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_6d8vs"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="Resource" id="Resource_gql7j"]
+resource_name = "'gameplay_jump'"
+script = ExtResource("1_6d8vs")
+Name = &"gameplay_jump"
+
+[resource]
+resource_name = "gameplay_jump: Space"
+script = ExtResource("2_wt8tq")
+_actionName = SubResource("Resource_gql7j")
+SourceEvent = SubResource("InputEventKey_6d8vs")

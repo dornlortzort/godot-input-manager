@@ -7,7 +7,7 @@ using Godot;
 /// (b) an InputProfile's InputBindings to Godot's InputEvents (i.e. events coming in from
 /// hardware).
 ///
-/// Effectively this is how our InputManager equips its profile and hooks into game
+/// Effectively this is how our InputSystem equips its profile and hooks into game
 /// updates.
 /// </summary>
 public class CompiledInputProfile {
@@ -19,7 +19,7 @@ public class CompiledInputProfile {
   /// <summary>
   /// Godot-engine InputEvents => Profile's InputBindings
   /// </summary>
-  public Dictionary<InputEventLookupKey, List<SimpleInputBinding>> EventLookup { get; }
+  public Dictionary<InputEventLookupKey, List<IEventCapturableBinding>> EventLookup { get; }
 
 
   public CompiledInputProfile(InputProfile profile) {
@@ -29,16 +29,17 @@ public class CompiledInputProfile {
         "InputProfile is invalid. To debug, view it in the editor and click \"Validate Profile\"");
     }
 
-    EventLookup = new Dictionary<InputEventLookupKey, List<SimpleInputBinding>>();
+    EventLookup = new Dictionary<InputEventLookupKey, List<IEventCapturableBinding>>();
     ActionLookup = new Dictionary<InputActionName, InputBinding>();
 
     foreach (var binding in profile.AllBindings) {
+      GD.Print($"** Now adding binding for action {binding.ActionName}");
       if (binding == null)
         throw new InvalidOperationException("InputProfile contains a null binding.");
 
       switch (binding) {
-        case SimpleInputBinding simple:
-          AddToEventLookup(EventLookup, simple);
+        case SingularInputBinding singular:
+          AddToEventLookup(EventLookup, singular);
           break;
         case CompositeInputBinding composite:
           foreach (var child in composite.Bindings) {
@@ -60,8 +61,10 @@ public class CompiledInputProfile {
   /// <param name="lookup">the lookup mid-construction</param>
   /// <param name="binding">binding to add</param>
   private static void
-    AddToEventLookup(Dictionary<InputEventLookupKey, List<SimpleInputBinding>> lookup, SimpleInputBinding binding) {
+    AddToEventLookup(Dictionary<InputEventLookupKey, List<IEventCapturableBinding>> lookup,
+      IEventCapturableBinding binding) {
     var key = InputEventLookupKey.From(binding.SourceEvent);
+    GD.Print($"binding for {binding.ActionName} adding key: {key}");
     if (!lookup.TryGetValue(key, out var list)) {
       list = [];
       lookup[key] = list;

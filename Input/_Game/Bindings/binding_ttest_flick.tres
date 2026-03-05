@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="CompositeInputBinding" format=3 uid="uid://by0b0aprjblyu"]
+
+[ext_resource type="Script" uid="uid://dcds2p1npwhdn" path="res://Input/Core/InputBinding/CompositeBindingChild.cs" id="1_oxgtl"]
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="5_2jw52"]
+[ext_resource type="Script" uid="uid://dh5uqe4ec81mw" path="res://Input/Core/InputBinding/CompositeInputBinding.cs" id="6_25til"]
+
+[sub_resource type="InputEventJoypadMotion" id="InputEventJoypadMotion_1rkis"]
+axis_value = -1.0
+
+[sub_resource type="Resource" id="Resource_dduk2"]
+resource_name = "AxisLeftX -1"
+script = ExtResource("1_oxgtl")
+SourceEvent = SubResource("InputEventJoypadMotion_1rkis")
+_modifiers = Array[Object]([])
+metadata/_custom_type_script = "uid://dcds2p1npwhdn"
+
+[sub_resource type="InputEventJoypadMotion" id="InputEventJoypadMotion_q6ahp"]
+axis_value = 1.0
+
+[sub_resource type="Resource" id="Resource_dfy5o"]
+resource_name = "AxisLeftX 1"
+script = ExtResource("1_oxgtl")
+SourceEvent = SubResource("InputEventJoypadMotion_q6ahp")
+_modifiers = Array[Object]([])
+metadata/_custom_type_script = "uid://dcds2p1npwhdn"
+
+[sub_resource type="InputEventJoypadMotion" id="InputEventJoypadMotion_oxgtl"]
+axis = 1
+axis_value = -1.0
+
+[sub_resource type="Resource" id="Resource_4t6q8"]
+resource_name = "AxisLeftY -1"
+script = ExtResource("1_oxgtl")
+SourceEvent = SubResource("InputEventJoypadMotion_oxgtl")
+_modifiers = Array[Object]([])
+metadata/_custom_type_script = "uid://dcds2p1npwhdn"
+
+[sub_resource type="Resource" id="Resource_2jw52"]
+resource_name = "'ttest_flick'"
+script = ExtResource("5_2jw52")
+Name = &"ttest_flick"
+metadata/_custom_type_script = "uid://5ueuekg1gqoy"
+
+[resource]
+script = ExtResource("6_25til")
+_actionName = SubResource("Resource_2jw52")
+Bindings = Array[Object]([SubResource("Resource_dduk2"), SubResource("Resource_dfy5o"), SubResource("Resource_4t6q8"), null])
+Modifiers = Array[Object]([])
+metadata/_custom_type_script = "uid://dh5uqe4ec81mw"

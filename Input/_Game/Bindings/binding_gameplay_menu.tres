@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SingularInputBinding" format=3 uid="uid://b2wpqsxi8x10f"]
+
+[ext_resource type="Script" uid="uid://5ueuekg1gqoy" path="res://Input/Core/Config/InputActionName.cs" id="1_bbgov"]
+[ext_resource type="Script" uid="uid://c3xau3cjs517p" path="res://Input/Core/Pipeline/InputModifier.cs" id="2_0ubpf"]
+[ext_resource type="Script" uid="uid://p6c2ojnfadb4" path="res://Input/Core/InputBinding/SingularInputBinding.cs" id="2_ipiab"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_bbgov"]
+device = -1
+keycode = 4194305
+
+[sub_resource type="Resource" id="Resource_cxh0n"]
+resource_name = "'gameplay_menu'"
+script = ExtResource("1_bbgov")
+Name = &"gameplay_menu"
+
+[resource]
+resource_name = "gameplay_menu: Escape"
+script = ExtResource("2_ipiab")
+_actionName = SubResource("Resource_cxh0n")
+SourceEvent = SubResource("InputEventKey_bbgov")

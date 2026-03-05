@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="InputActionSchema" format=3 uid="uid://s1x3ebyxdoc2"]
+
+[ext_resource type="Script" uid="uid://0y6fnokx4l0k" path="res://Input/Triggers/HoldUntilTrigger.cs" id="1_d8dth"]
+[ext_resource type="Script" uid="uid://c0vs50lnadt1a" path="res://Input/Core/InputAction/InputActionSchema.cs" id="2_86woc"]
+
+[sub_resource type="Resource" id="Resource_0oqu6"]
+script = ExtResource("1_d8dth")
+Duration = 2.0
+metadata/_custom_type_script = "uid://0y6fnokx4l0k"
+
+[resource]
+resource_name = "Bool 'ttest_holduntil' [HoldUntil], remap:✓, buf:✗"
+script = ExtResource("2_86woc")
+_actionName = &"ttest_holduntil"
+_displayName = "Hold Until Test"
+_trigger = SubResource("Resource_0oqu6")
+metadata/_custom_type_script = "uid://c0vs50lnadt1a"

@@ -4,7 +4,7 @@ using System;
 public static class InputProfileLoader {
   public const string SavePath = "user://last_input_profile.res";
 
-  public static InputProfile LoadLastUsedProfile(InputManager manager) {
+  public static InputProfile LoadLastUsedProfile(InputSystem system) {
     if (ResourceLoader.Exists(SavePath)) {
       var loaded = ResourceLoader.Load<InputProfile>(SavePath,
         cacheMode: ResourceLoader.CacheMode.Ignore);
@@ -12,7 +12,7 @@ public static class InputProfileLoader {
       GD.PushWarning($"Corrupted profile at {SavePath}, falling back to default.");
     }
 
-    if (manager.Registry != null) return manager.Registry.DefaultProfile;
+    if (system.Registry != null) return system.Registry.DefaultProfile;
 
     throw new InvalidOperationException("No valid input Registry or profile available.");
   }

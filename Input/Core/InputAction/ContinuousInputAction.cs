@@ -4,12 +4,10 @@ using Godot;
 public abstract partial class ContinuousInputAction<TValue> : InputAction where TValue : struct {
   public abstract TValue Value { get; }
 
-  protected override void ConsumeSamples(ReadOnlySpan<InputSample> samplesThisFrame) {
-    if (samplesThisFrame.Length == 0) {
-      _currentValue = Vector3.Zero;
-      return;
-    }
+  protected override void ConsumePayloads(ReadOnlySpan<InputPayload> payloadsThisFrame) {
+    if (payloadsThisFrame.Length == 0) return;
 
-    _currentValue = samplesThisFrame[^1].Value;
+    var latest = payloadsThisFrame[^1];
+    _currentValue = new Vector3(latest.X ?? _currentValue.X, latest.Y ?? _currentValue.Y, latest.Z ?? _currentValue.Z);
   }
 }
